@@ -1,0 +1,14 @@
+#this is the object manifest
+#sharps designate a comment
+#DATA TYPES:
+#b	bool	i	int
+#f	float	s	string
+#h	header
+h Monster
+sN Name
+E Difficulty
+T tupletest
+#s value
+#i chance
+#T
+A arraytest

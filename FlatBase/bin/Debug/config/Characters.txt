@@ -1,0 +1,10 @@
+#this is the object manifest
+#sharps designate a comment
+#DATA TYPES:
+#b	bool	i	int
+#f	float	s	string
+#h	header	G
+h Character
+sN name
+i level
+r Inventory 1

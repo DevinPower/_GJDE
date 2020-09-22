@@ -1,0 +1,126 @@
+{
+  "$type": "FlatBase.GJDB, FlatBase",
+  "tabNames": {
+    "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+    "$values": [
+      "Characters",
+      "Items",
+      "Monsters"
+    ]
+  },
+  "data": {
+    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System]], System",
+    "$values": [
+      {
+        "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+        "$values": [
+          {
+            "$type": "FlatBase.ObjectStructure, FlatBase",
+            "Name": "New Entry",
+            "fieldexportnames": {
+              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+              "$values": [
+                "Character",
+                "name",
+                "level",
+                "1"
+              ]
+            },
+            "FIELDS": {
+              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+              "$values": [
+                {
+                  "$type": "FlatBase.ObjectHeader, FlatBase",
+                  "Name": "Character"
+                },
+                "New Entry",
+                0,
+                {
+                  "$type": "FlatBase.OReferenceList, FlatBase",
+                  "refDB": 1,
+                  "REFS": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Int32, mscorlib]], System",
+                    "$values": []
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+        "$values": []
+      },
+      {
+        "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+        "$values": [
+          {
+            "$type": "FlatBase.ObjectStructure, FlatBase",
+            "Name": "test monster",
+            "fieldexportnames": {
+              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+              "$values": [
+                "Monster",
+                "Name",
+                "Difficulty",
+                "tupletest"
+              ]
+            },
+            "FIELDS": {
+              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+              "$values": [
+                {
+                  "$type": "FlatBase.ObjectHeader, FlatBase",
+                  "Name": "Monster"
+                },
+                "test monster",
+                {
+                  "$type": "FlatBase.EnumField, FlatBase",
+                  "reference": "Difficulty",
+                  "selected": 0
+                },
+                {
+                  "$type": "FlatBase.Misc.TupleStructure, FlatBase",
+                  "fields": {
+                    "$type": "System.Collections.Generic.List`1[[FlatBase.ObjectStructure, FlatBase]], mscorlib",
+                    "$values": [
+                      {
+                        "$type": "FlatBase.ObjectStructure, FlatBase",
+                        "Name": "New Entry",
+                        "fieldexportnames": {
+                          "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+                          "$values": []
+                        },
+                        "FIELDS": {
+                          "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+                          "$values": [
+                            46
+                          ]
+                        }
+                      },
+                      {
+                        "$type": "FlatBase.ObjectStructure, FlatBase",
+                        "Name": "New Entry",
+                        "fieldexportnames": {
+                          "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+                          "$values": []
+                        },
+                        "FIELDS": {
+                          "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+                          "$values": [
+                            2
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
