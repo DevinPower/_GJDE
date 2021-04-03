@@ -4,4 +4,5 @@
 #b	bool	i	int
 #f	float	s	string
 #h	header
-T aaa
+! testweight
+A tupletemp

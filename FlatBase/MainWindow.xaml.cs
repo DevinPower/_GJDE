@@ -30,11 +30,12 @@ namespace FlatBase
         static EnumManager em = new EnumManager();
 
         public List<ObjectStructure> objectTemplates = new List<ObjectStructure>();
+        public Dictionary<string, List<string>> subclasses { get; set; }
         List<StackPanel> stackProperties = new List<StackPanel>();
         
-        public void loadDatabase()
+        public void loadDatabase(string fileName)
         {
-            string file = File.ReadAllText("autosave.db");
+            string file = File.ReadAllText(fileName);
             GJDB tempList = 
                 (GJDB)JsonConvert.DeserializeObject(file, new JsonSerializerSettings
             {
@@ -52,31 +53,39 @@ namespace FlatBase
             }
         }
 
-        public void saveDatabase()
+        public void saveDatabase(string fileName)
         {
             string json = JsonConvert.SerializeObject(database, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All
             });
 
-            File.WriteAllText("autosave.db", json);
+            File.WriteAllText(fileName, json);
         }
 
         public MainWindow()
         {
             database = new GJDB();
-            
+            subclasses = new Dictionary<string, List<string>>();
         }
 
         private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
         {
-            database.data[index].Add(((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy());
+            int ind = tabMain.SelectedIndex;
+            string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
+            database.data[index].Add(((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy(loadManifest(n)));
+            lv.Items.Refresh();
         }
 
         private void Entry_Delete(object sender, RoutedEventArgs e, ListView lv, int index)
         {
             database.data[index].RemoveAt(lv.SelectedIndex);
             lv.SelectedIndex = -1;
+        }
+
+        private void Entry_Exclude(object sender, RoutedEventArgs e, ListView lv, int index)
+        {
+            ((ObjectStructure)database.data[index][lv.SelectedIndex]).excludeExport = true;
         }
 
         private void SelectionChange(object sender, RoutedEventArgs e)
@@ -126,6 +135,16 @@ namespace FlatBase
                 if (s[i][0] == '#')
                     continue;
 
+                if (s[i][0] == '>')
+                {
+                    s[i] = s[i].Remove(0, 1);
+                    if (!subclasses.ContainsKey(s[i - 1]))
+                        Console.WriteLine("dict not found");
+                    subclasses[s[i - 1]].Add(s[i]);
+
+                    continue;
+                }
+
                 TabItem tI = new TabItem();
                 tI.Header = s[i];
                 database.addDB();
@@ -133,7 +152,8 @@ namespace FlatBase
                 Grid G = new Grid();
                 tI.Content = G;
 
-                
+                Misc.SearchFilter SF = new Misc.SearchFilter();
+
                 Card c = new Card();
                 c.Padding = new Thickness(8);
                 c.Margin = new Thickness(192, 0, 16, 16);
@@ -147,6 +167,8 @@ namespace FlatBase
                 sv.Content = sp;
                 c.Content = sv;
 
+
+
                 Menu m = new Menu();
                 m.HorizontalAlignment = HorizontalAlignment.Left;
                 m.Height = 48;
@@ -158,19 +180,43 @@ namespace FlatBase
                 lv.HorizontalAlignment = HorizontalAlignment.Left;
                 lv.VerticalAlignment = VerticalAlignment.Top;
                 lv.Width = 180;
-                lv.Margin = new Thickness(0, 58, 0, 0);
+                lv.Margin = new Thickness(0, 96, 0, 0);
+
+
                 //lv.ItemsSource = database.Last();
 
                 int tempI = i;
 
-                Binding hierarchyBinding = new Binding();
+                MultiBinding mb = new MultiBinding();
+
+                Binding lhs = new Binding();
+                lhs.Path = new PropertyPath("data[" + tempI + "]");
+                lhs.Source = database;
+
+                Binding rhs = new Binding();
+                rhs.Source = SF;
+                rhs.Path = new PropertyPath("FILTERS");
+
+                mb.Bindings.Add(lhs);
+                mb.Bindings.Add(rhs);
+
+                mb.Converter = new Misc.HierarchyConverter();
+
+                /*Binding hierarchyBinding = new Binding();
                 hierarchyBinding.Path = new PropertyPath("data[" + tempI + "]");
                 hierarchyBinding.Source = database;
-                hierarchyBinding.Converter = new Misc.HierarchyConverter();
+                hierarchyBinding.Converter = mb;*/
+                //new Misc.HierarchyConverter();
 
                 lv.DataContext = database;
                 lv.SetBinding(ListView.ItemsSourceProperty,
-                    hierarchyBinding);
+                    mb);
+
+                /*Binding exclBind = new Binding();
+                exclBind.Source = database;
+                exclBind.Path = new PropertyPath("data[" + tempI + "].excludeExport");
+                exclBind.Converter = new Misc.ExclusionConverter();
+                lv.SetBinding(ListView.color, exclBind);*/
 
                 lv.SelectionChanged += SelectionChange;
 
@@ -179,30 +225,72 @@ namespace FlatBase
                 duplicateMI.Header = "Duplicate";
                 MenuItem removeMI = new MenuItem();
                 removeMI.Header = "Remove";
+                MenuItem excludeMI = new MenuItem();
+                excludeMI.Header = "Exclude";
 
                 duplicateMI.Click += (rs, EventArgs) => { Entry_Copy(rs, EventArgs, lv, tempI); };
                 removeMI.Click += (rs, EventArgs) => { Entry_Delete(rs, EventArgs, lv, tempI); };
+                excludeMI.Click += (rs, EventArgs) => { Entry_Exclude(rs, EventArgs, lv, tempI); };
 
                 cm.Items.Add(duplicateMI);
                 cm.Items.Add(removeMI);
+                cm.Items.Add(excludeMI);
                 lv.ContextMenu = cm;
 
 
                 Button bA = new Button();
-                bA.Content = "+ Compose";
+                bA.Content = "New";
                 bA.Width = 164;
+
+                ContextMenu additionalAddMenu = new ContextMenu();
+                MenuItem miATemp = new MenuItem();
+                miATemp.Header = "From Template";
+
+                MenuItem miSub = new MenuItem();
+                miSub.Header = "Subclass";
+
+                subclasses.Add(s[i], new List<string>());
+
+                //Binding subBinding = new Binding();
+                //subBinding.Source = subclasses[s[i]];
+                //if (subclasses[s[i]] == null)
+                //    Console.WriteLine("no " + s[i] + "subclass ");
+                //subBinding.Path = new PropertyPath("subclasses[" + s[i] + "]");
+                //miSub.SetBinding(MenuItem.ItemsSourceProperty, subBinding);
+                miSub.DataContext = subclasses[s[i]];
+                miSub.ItemsSource = subclasses[s[i]];
+                //Console.WriteLine("added {0} to misub", subclasses[s[i]].Count.ToString());
+
+                //TODO: Bind templates here
+
+                additionalAddMenu.Items.Add(miATemp);
+                additionalAddMenu.Items.Add(miSub);
+
+                Button bB = new Button();
+                PackIcon ic = new PackIcon();
+                ic.Kind = PackIconKind.ChevronDown;
+                bB.Content = ic;
+                bB.Width = 46;
+                bB.Height = 36;
+                bB.HorizontalAlignment = HorizontalAlignment.Right;
+                bB.ContextMenu = additionalAddMenu;
+
+                Grid bGrid = new Grid();
+                bGrid.Children.Add(bA);
+                bGrid.Children.Add(bB);
 
                 database.tabNames.Add(s[i]);
                 
                 bA.Click += (sender, EventArgs) => { database.addItem(tempI); };
                 //{ Add_Click(sender, EventArgs, lv); };
 
-                m.Items.Add(bA);
-
+                m.Width = 350;
+                m.Height = 900;
+                m.Items.Add(bGrid);
+                m.Items.Add(SF);
                 G.Children.Add(m);
                 G.Children.Add(lv);
                 G.Children.Add(c);
-
                 tabMain.Items.Add(tI);
             }
         }
@@ -214,6 +302,8 @@ namespace FlatBase
             int c = 0;
             foreach(Object o in os.FIELDS)
             {
+                Console.WriteLine(o.GetType());
+
                 //TODO: Switch statement
                 if (o is bool)
                 {
@@ -223,7 +313,7 @@ namespace FlatBase
 
                     fsb.toggleVal.DataContext = os;
                     fsb.toggleVal.SetBinding(ToggleButton.IsCheckedProperty,
-                        new Binding() { Path = new PropertyPath("FIELDS["+c+"]"), Source = os });
+                        new Binding() { Path = new PropertyPath("FIELDS[" + c + "]"), Source = os });
 
                     fsb.container.Width = 400 - (depth * 100);
 
@@ -253,13 +343,22 @@ namespace FlatBase
                     continue;
                 }
 
-                if (o is float)
+                if (o is float || o is double)
                 {
-                    FieldSnippets.fsnipNumber fsn = new FieldSnippets.fsnipNumber(true);
+                    FieldSnippets.fsnipNumber fsn = new FieldSnippets.fsnipNumber(false);
+
+                    Binding intBinding = new Binding();
+                    intBinding.Path = new PropertyPath("FIELDS[" + c + "]");
+                    intBinding.Source = os;
+                    intBinding.Converter = new Misc.FloatConverter();
+
                     fsn.numVal.SetBinding(TextBox.TextProperty,
-                        new Binding() { Path = new PropertyPath("FIELDS[" + c + "]"), Source = os });
+                        intBinding);
+
+                    fsn.container.Width = 400 - (depth * 200);
 
                     tar.Children.Add(fsn);
+
                     c++;
                     continue;
                 }
@@ -303,6 +402,54 @@ namespace FlatBase
                     c++;
                     continue;
                 }
+
+                if (o is Misc.FilePathStructure)
+                {
+                    Misc.FilePathStructure fp = o as Misc.FilePathStructure;
+                    FieldSnippets.fsnipSprite sp = new FieldSnippets.fsnipSprite(fp);
+                    
+
+                    Binding lhs = new Binding();
+                    lhs.Path = new PropertyPath("PATH");
+                    lhs.Source = o;
+                    lhs.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    Binding rhs = new Binding();
+                    rhs.Path = new PropertyPath("PATH");
+                    rhs.Source = o;
+                    rhs.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    sp.Path.SetBinding(TextBox.TextProperty, lhs);
+                    sp.Render.SetBinding(Image.SourceProperty, rhs);
+
+                    tar.Children.Add(sp);
+                    c++;
+                    continue;
+                }
+
+                if (o is TagField)
+                {
+                    TagField tf = o as TagField;
+                    FieldSnippets.fsnipTags es = new FieldSnippets.fsnipTags(TagManager.tags["Global"], tf);
+                    
+                    es.tagList.DataContext = o;
+                    Binding textBind = new Binding();
+                    textBind.Path = new PropertyPath("value");
+                    textBind.Source = o;
+                    textBind.Converter = new Misc.TagChipConverter(tf.value);
+                    textBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    es.tagList.SetBinding(ListView.ItemsSourceProperty,
+                        textBind);
+
+                    //es.tagList.SetBinding(ListView.ItemsSourceProperty, value);
+
+                    tar.Children.Add(es);
+                    c++;
+                    continue;
+                }
+
+
 
                 if (o is ObjectHeader)
                 {
@@ -386,7 +533,42 @@ namespace FlatBase
                 
                 if (o is ArrayStructure)
                 {
-                    FieldSnippets.fsnipArray fsor = new FieldSnippets.fsnipArray("TestArray", this);
+                    FieldSnippets.fsnipArray fsor = new FieldSnippets.fsnipArray("TestArray", this, o as ArrayStructure);
+
+                    fsor.lView.DataContext = os;
+                    Binding itemBind = new Binding();
+                    itemBind.Path = new PropertyPath("REFS");
+                    itemBind.Source = o;
+                    itemBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                    itemBind.Converter = new Misc.AStructConverter(this);
+
+
+                    
+                    fsor.lView.SetBinding(ListView.ItemsSourceProperty,
+                        itemBind);
+
+                    tar.Children.Add(fsor);
+                    c++;
+                    continue;
+                }
+
+                if (o is Misc.WeightedGroup)
+                {
+                    FieldSnippets.fsnipSlider fsor = new FieldSnippets.fsnipSlider();
+
+                    Binding lhs = new Binding();
+                    lhs.Path = new PropertyPath("POINTS");
+                    lhs.Source = o;
+                    lhs.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    Binding rhs = new Binding();
+                    rhs.Path = new PropertyPath("points");
+                    rhs.Source = (o as Misc.WeightedGroup).tiedWP;
+                    rhs.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    fsor.Slider.SetBinding(Slider.ValueProperty, lhs);
+                    fsor.NumDisplay.SetBinding(Label.ContentProperty, lhs);
+                    fsor.Slider.SetBinding(Slider.MaximumProperty, rhs);
 
                     tar.Children.Add(fsor);
                     c++;
@@ -395,10 +577,13 @@ namespace FlatBase
             }
         }
 
-        public static ObjectStructure loadManifest(string catName)
+        public static ObjectStructure loadManifest(string catName, ObjectStructure parent = null, ObjectStructure ovrrd = null)
         {
             string[] s = File.ReadAllLines("config/"+catName+".txt");
             ObjectStructure nost = new ObjectStructure();
+            if (ovrrd != null)
+                nost = ovrrd;
+
             int c = 0;
             for (int i = 0; i < s.Count(); i++)
             {
@@ -406,6 +591,19 @@ namespace FlatBase
                     continue;
 
                 string clipped = s[i].Split(' ')[1];
+
+                if (s[i][0] == 'I')
+                {
+                    loadManifest(clipped, parent, nost);
+                    continue;
+                }
+
+                if (s[i][0] == '!')
+                {
+                    nost.weightpools.Add(clipped, new Misc.weightpool());
+                    Console.WriteLine(clipped + " weightpool");
+                    continue;
+                }
 
                 if (s[i][0] == 'b')
                 {
@@ -427,14 +625,37 @@ namespace FlatBase
                     nost.FIELDS.Add(0.0f);
                 }
 
+                if (s[i][0] == 'S')
+                {
+                    nost.FIELDS.Add(new Misc.FilePathStructure());
+                }
+
                 if (s[i][0] == 's')
                 {
                     nost.FIELDS.Add("New Entry");
                 }
 
+                if (s[i][0] == 'm')
+                {
+                    Console.WriteLine("M");
+                }
+
+                if (s[i][0] == 'W')
+                {
+                    if (parent == null)
+                        nost.FIELDS.Add(new Misc.WeightedGroup(nost.weightpools[clipped]));
+                    else
+                        nost.FIELDS.Add(new Misc.WeightedGroup(parent.weightpools[clipped]));
+                }
+
                 if (s[i][0] == 'E')
                 {
                     nost.FIELDS.Add(new EnumField(clipped));
+                }
+
+                if (s[i][0] == 'l')
+                {
+                    nost.FIELDS.Add(new TagField(clipped));
                 }
 
                 if (s[i][0] == 'r')
@@ -458,25 +679,27 @@ namespace FlatBase
 
                 if (s[i][0] == 'A')
                 {
-                    nost.FIELDS.Add(new ArrayStructure());
+                    string eVAL = s[i].Split(' ')[1];
+
+                    ArrayStructure aStruct = new ArrayStructure(eVAL, nost);
+                    nost.FIELDS.Add(aStruct);
                 }
 
                 if (s[i][0] == 'T')
                 {
                     List<ObjectStructure> dummytuple = new List<ObjectStructure>();
-                    ObjectStructure os1 = new ObjectStructure();
-                    os1.FIELDS.Add(12);
+                    bool skipped = false;
+                    foreach (string TT in s[i].Split(' '))
+                    {
+                        if (!skipped)
+                        {
+                            skipped = true;
+                            continue;
+                        }
+                        ObjectStructure os = loadManifest(TT, parent);
+                        dummytuple.Add(os);
 
-                    ObjectStructure os2 = new ObjectStructure();
-                    os2.FIELDS.Add(1);
-
-                    ObjectStructure os3 = new ObjectStructure();
-                    os3.FIELDS.Add(3);
-
-
-                    dummytuple.Add(os1);
-                    dummytuple.Add(os2);
-                    dummytuple.Add(os3);
+                    }
 
                     nost.FIELDS.Add(new Misc.TupleStructure(dummytuple));
                 }
@@ -491,17 +714,22 @@ namespace FlatBase
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             em.parseAll();
+            TagManager.parseAll();
             loadCategories();   
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            saveDatabase();
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+                saveDatabase(saveFileDialog.FileName);
         }
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            loadDatabase();
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                loadDatabase(openFileDialog.FileName);
         }
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)

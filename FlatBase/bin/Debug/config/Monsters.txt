@@ -4,11 +4,12 @@
 #b	bool	i	int
 #f	float	s	string
 #h	header
+! testweight
 h Monster
 sN Name
+l Global
 E Difficulty
-T tupletest
-#s value
-#i chance
-#T
 A arraytest
+W testweight
+W testweight
+W testweight

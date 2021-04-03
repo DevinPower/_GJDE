@@ -21,6 +21,7 @@ namespace FlatBase.FieldSnippets
     /// </summary>
     public partial class fsnipNumber : UserControl
     {
+        
         public fsnipNumber(bool isFloat)
         {
             InitializeComponent();

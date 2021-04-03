@@ -8,3 +8,4 @@ h Character
 sN name
 i level
 r Inventory 1
+f seconds

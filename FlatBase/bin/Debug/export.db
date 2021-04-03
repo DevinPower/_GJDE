@@ -1,4 +1,6 @@
 {
 "Characters" : [
-{"name":"Navigator","level":"43","1":"FlatBase.OReferenceList"},{"name":"Priestess","level":"1","1":"FlatBase.OReferenceList"}],"Items" : [
-{"Item":"Compass","usable":"False"},{"Item":"Healing Potion","usable":"True"}]}
+{"name":"Test character","level":12,"1":"FlatBase.OReferenceList","seconds":"0"}],"Items" : [
+],"Monsters" : [
+],"Tuple" : [
+]}

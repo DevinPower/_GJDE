@@ -24,20 +24,25 @@ namespace FlatBase.FieldSnippets
     public partial class fsnipArray : UserControl
     {
         MainWindow refmw;
+        ArrayStructure refas;
 
-        public fsnipArray(string title, MainWindow mw)
+        public fsnipArray(string title, MainWindow mw, ArrayStructure _as)
         {
             InitializeComponent();
 
             groupBox.Header = title;
             refmw = mw;
+            refas = _as;
         }
 
         public void addItem(object sender, RoutedEventArgs e)
         {
-            Grid g = new Grid();
+            /*Grid g = new Grid();
             refmw.buildOSView(g, MainWindow.loadManifest("Tuple"), 0);
-            lView.Items.Add(g);
+            lView.Items.Add(g);*/
+            refas.add();
+
+            
         }
     }
 }

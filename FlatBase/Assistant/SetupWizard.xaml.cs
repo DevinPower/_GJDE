@@ -31,7 +31,7 @@ namespace FlatBase.Assistant
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        readonly string[] generics =  { "int", "string", "bool", "float", "double" };
+        readonly string[] generics = { "int", "string", "bool", "float", "double" };
         string _name;
         string _type;
 
@@ -47,16 +47,24 @@ namespace FlatBase.Assistant
         public string Type
         {
             get
-            {        
-                if (SetupWizard.loadedClasses.Contains(_type) || generics.Contains(_type))
-                    return _type;
-                else
-                    return "Type " + _type + " not found";
+            {
+                return _type;
             }
             set
             {
                 _type = value;
                 PropertyChanged(this, new PropertyChangedEventArgs(""));
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                if (SetupWizard.loadedClasses.Contains(_type) || generics.Contains(_type))
+                    return "+";
+                else
+                    return "E";
             }
         }
 
@@ -70,9 +78,13 @@ namespace FlatBase.Assistant
         {
             return Name + " " + Type;
         }
+    }
 
-        
-
+    public class ConvertedClass
+    {
+        public string name { get; set; }
+        public ObservableCollection<fieldHelper> fields { get; set; }
+        public ObservableCollection<string> dependencies = new ObservableCollection<string>();
     }
 
     /// <summary>
@@ -81,7 +93,7 @@ namespace FlatBase.Assistant
     public partial class SetupWizard : Window
     {
         public static ObservableCollection<string> loadedClasses = new ObservableCollection<string>();
-        public ObservableCollection<ObservableCollection<fieldHelper>> inspectedClasses { get; set; }
+        public static ObservableCollection<ConvertedClass> inspectedClasses { get; set; }
 
         public void deleteClass(object sender, RoutedEventArgs e)
         {
@@ -91,7 +103,7 @@ namespace FlatBase.Assistant
         public SetupWizard()
         {
             InitializeComponent();
-            inspectedClasses = new ObservableCollection<ObservableCollection<fieldHelper>>();
+            inspectedClasses = new ObservableCollection<ConvertedClass>();
 
             ContextMenu cm = new ContextMenu();
             MenuItem removeMI = new MenuItem();
@@ -132,11 +144,22 @@ namespace FlatBase.Assistant
                 object[] identifierTypes = c.DescendantNodes()
                 .OfType<PropertyDeclarationSyntax>().Select(v => v.Type)
                 .ToArray();
-
+                //Console.WriteLine(c.BaseList.ToString());
                 loadedClasses.Add(c.Identifier.ToString());
 
                 ObservableCollection<fieldHelper> vO = new ObservableCollection<fieldHelper>();
-                inspectedClasses.Add(vO);
+                ConvertedClass cc = new ConvertedClass();
+                cc.fields = vO;
+                if (c.BaseList != null)
+                {
+                    string clean = c.BaseList.ToString();
+                    clean = clean.Replace(" ", "");
+                    clean = clean.Replace(":", "");
+                    Console.WriteLine("adding " + clean);
+                    cc.dependencies.Add(clean);
+                }
+                cc.name = c.Identifier.ToString();
+                inspectedClasses.Add(cc);
 
                 for (int i = 0; i < identifierNames.Count(); i++)
                 {

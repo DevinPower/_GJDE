@@ -5,7 +5,8 @@
     "$values": [
       "Characters",
       "Items",
-      "Monsters"
+      "Monsters",
+      "Tuple"
     ]
   },
   "data": {
@@ -13,40 +14,7 @@
     "$values": [
       {
         "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
-        "$values": [
-          {
-            "$type": "FlatBase.ObjectStructure, FlatBase",
-            "Name": "New Entry",
-            "fieldexportnames": {
-              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
-              "$values": [
-                "Character",
-                "name",
-                "level",
-                "1"
-              ]
-            },
-            "FIELDS": {
-              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
-              "$values": [
-                {
-                  "$type": "FlatBase.ObjectHeader, FlatBase",
-                  "Name": "Character"
-                },
-                "New Entry",
-                0,
-                {
-                  "$type": "FlatBase.OReferenceList, FlatBase",
-                  "refDB": 1,
-                  "REFS": {
-                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Int32, mscorlib]], System",
-                    "$values": []
-                  }
-                }
-              ]
-            }
-          }
-        ]
+        "$values": []
       },
       {
         "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
@@ -57,14 +25,25 @@
         "$values": [
           {
             "$type": "FlatBase.ObjectStructure, FlatBase",
-            "Name": "test monster",
+            "weightpools": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[FlatBase.Misc.weightpool, FlatBase]], mscorlib",
+              "testweight": {
+                "$type": "FlatBase.Misc.weightpool, FlatBase",
+                "points": 100
+              }
+            },
+            "Name": "New Entry",
             "fieldexportnames": {
               "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
               "$values": [
                 "Monster",
                 "Name",
+                "Global",
                 "Difficulty",
-                "tupletest"
+                "arraytest",
+                "testweight",
+                "testweight",
+                "testweight"
               ]
             },
             "FIELDS": {
@@ -74,52 +53,139 @@
                   "$type": "FlatBase.ObjectHeader, FlatBase",
                   "Name": "Monster"
                 },
-                "test monster",
+                "New Entry",
+                {
+                  "$type": "FlatBase.TagField, FlatBase",
+                  "reference": "Global",
+                  "value": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.String, mscorlib]], System",
+                    "$values": []
+                  }
+                },
                 {
                   "$type": "FlatBase.EnumField, FlatBase",
                   "reference": "Difficulty",
                   "selected": 0
                 },
                 {
-                  "$type": "FlatBase.Misc.TupleStructure, FlatBase",
-                  "fields": {
-                    "$type": "System.Collections.Generic.List`1[[FlatBase.ObjectStructure, FlatBase]], mscorlib",
-                    "$values": [
-                      {
-                        "$type": "FlatBase.ObjectStructure, FlatBase",
-                        "Name": "New Entry",
-                        "fieldexportnames": {
-                          "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
-                          "$values": []
-                        },
-                        "FIELDS": {
-                          "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
-                          "$values": [
-                            46
-                          ]
-                        }
-                      },
-                      {
-                        "$type": "FlatBase.ObjectStructure, FlatBase",
-                        "Name": "New Entry",
-                        "fieldexportnames": {
-                          "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
-                          "$values": []
-                        },
-                        "FIELDS": {
-                          "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
-                          "$values": [
-                            2
-                          ]
-                        }
-                      }
-                    ]
+                  "$type": "FlatBase.ArrayStructure, FlatBase",
+                  "pureName": "arraytest",
+                  "REFS": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+                    "$values": []
                   }
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 50
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 16
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 50
+                }
+              ]
+            }
+          },
+          {
+            "$type": "FlatBase.ObjectStructure, FlatBase",
+            "weightpools": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[FlatBase.Misc.weightpool, FlatBase]], mscorlib",
+              "testweight": {
+                "$type": "FlatBase.Misc.weightpool, FlatBase",
+                "points": 100
+              }
+            },
+            "Name": "New Entry",
+            "fieldexportnames": {
+              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+              "$values": [
+                "Monster",
+                "Name",
+                "Global",
+                "Difficulty",
+                "arraytest",
+                "testweight",
+                "testweight",
+                "testweight"
+              ]
+            },
+            "FIELDS": {
+              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+              "$values": [
+                {
+                  "$type": "FlatBase.ObjectHeader, FlatBase",
+                  "Name": "Monster"
+                },
+                "New Entry",
+                {
+                  "$type": "FlatBase.TagField, FlatBase",
+                  "reference": "Global",
+                  "value": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.String, mscorlib]], System",
+                    "$values": []
+                  }
+                },
+                {
+                  "$type": "FlatBase.EnumField, FlatBase",
+                  "reference": "Difficulty",
+                  "selected": 0
+                },
+                {
+                  "$type": "FlatBase.ArrayStructure, FlatBase",
+                  "pureName": "arraytest",
+                  "REFS": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+                    "$values": []
+                  }
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 0
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 0
+                },
+                {
+                  "$type": "FlatBase.Misc.WeightedGroup, FlatBase",
+                  "tiedWP": {
+                    "$type": "FlatBase.Misc.weightpool, FlatBase",
+                    "points": 100
+                  },
+                  "POINTS": 0
                 }
               ]
             }
           }
         ]
+      },
+      {
+        "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+        "$values": []
       }
     ]
   }

@@ -18,14 +18,16 @@
      FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
         <StackPanel Orientation="Horizontal">
-            <ListView Name="loadedScripts" Width="150" SelectionChanged="LoadedScripts_SelectionChanged">
-                <!--<ListViewItem>
-                    <Grid>
-                        <TextBlock Width="100">Demo</TextBlock>
-                        <materialDesign:PackIcon Kind="CheckboxBlankCircleOutline" HorizontalAlignment="Right"></materialDesign:PackIcon>
-                    </Grid>
-                </ListViewItem>-->
-            </ListView>
+            <materialDesign:Card>
+                <ListView Name="loadedScripts" Width="150" SelectionChanged="LoadedScripts_SelectionChanged" Margin="0,0,0,35">
+                    <!--<ListViewItem>
+                        <Grid>
+                            <TextBlock Width="100">Demo</TextBlock>
+                            <materialDesign:PackIcon Kind="CheckboxBlankCircleOutline" HorizontalAlignment="Right"></materialDesign:PackIcon>
+                        </Grid>
+                    </ListViewItem>-->
+                </ListView>
+            </materialDesign:Card>
             <ListView Name="inspector" Width="300"></ListView>
         </StackPanel>
         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">

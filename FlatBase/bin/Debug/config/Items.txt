@@ -7,3 +7,4 @@
 h Item
 sN Item Name
 b usable
+S icon

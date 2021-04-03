@@ -24,7 +24,7 @@ namespace FlatBase.FieldSnippets
         {
             InitializeComponent();
 
-            textValue.Height = height * 48;
+            textValue.Height = 32;// height * 48;
         }
     }
 }
