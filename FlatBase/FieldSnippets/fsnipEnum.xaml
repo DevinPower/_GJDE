@@ -12,9 +12,10 @@
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}">
-    <Grid Name="container" Height="32" Width="400" HorizontalAlignment="Left" VerticalAlignment="Center">
-        <ComboBox Name="comboEnum" Width="200" HorizontalAlignment="Left"></ComboBox>
+     FontFamily="{DynamicResource MaterialDesignFont}"
+             HorizontalAlignment="Stretch">
+    <Grid Name="container" Height="32" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+        <ComboBox Name="comboEnum" HorizontalAlignment="Stretch" Margin="0, 0, 50, 0"></ComboBox>
         <Label x:Name="labelTitle" Content="Enum" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

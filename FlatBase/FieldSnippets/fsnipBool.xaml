@@ -12,8 +12,8 @@
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}" MinWidth="100" MinHeight="48">
-    <Grid Name="container" Height="32" Width="400" HorizontalAlignment="Left" VerticalAlignment="Center">
+     FontFamily="{DynamicResource MaterialDesignFont}" HorizontalAlignment="Stretch" MinHeight="48">
+    <Grid Name="container" Height="32" HorizontalAlignment="Stretch" VerticalAlignment="Center">
         <ToggleButton x:Name="toggleVal" Content="T" Style="{StaticResource MaterialDesignSwitchToggleButton}"
                               ToolTip="MaterialDesignActionToggleButton"
                               materialDesign:ShadowAssist.ShadowDepth="Depth3" Width="56" HorizontalAlignment="Left"/>

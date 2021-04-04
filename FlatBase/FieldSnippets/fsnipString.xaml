@@ -12,9 +12,10 @@
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}">
+     FontFamily="{DynamicResource MaterialDesignFont}"
+             HorizontalAlignment="Stretch">
 
-    <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Name ="textValue" HorizontalAlignment="Left" Height="48" Margin="0,0,0,0" VerticalAlignment="Top" Width="400" AcceptsReturn="True"/>
+    <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Name ="textValue" HorizontalAlignment="Stretch" Height="48" Margin="0,0,0,0" VerticalAlignment="Top" AcceptsReturn="True"/>
 
 
 </UserControl>

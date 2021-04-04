@@ -13,8 +13,8 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-             Width="400" HorizontalAlignment="Left">
-    <GroupBox Header="Graph" HorizontalAlignment="Left">
+             HorizontalAlignment="Stretch" MinWidth="400">
+    <GroupBox Header="Graph" HorizontalAlignment="Stretch">
         <StackPanel>
         <Image Cursor="Hand" Name="pbDisplay" MouseMove="manipulateImage" 
                MouseDown="PbDisplay_MouseDown" Width="400" Height="400"

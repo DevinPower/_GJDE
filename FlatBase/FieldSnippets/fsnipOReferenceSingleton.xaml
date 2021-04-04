@@ -13,9 +13,9 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-             HorizontalAlignment="Left">
-    <Grid>
-        <materialDesign:Card Width="200" Height="32" Name="Display"/>
+             HorizontalAlignment="Stretch">
+    <Grid HorizontalAlignment="Stretch">
+        <materialDesign:Card HorizontalAlignment="Stretch" Height="32" Name="Display"/>
         <Button Width="50"  Click="addItem" HorizontalAlignment="Right">
             <materialDesign:PackIcon Kind="CheckboxBlankCircleOutline"/>
         </Button>

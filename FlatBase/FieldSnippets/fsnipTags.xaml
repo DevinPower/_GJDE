@@ -29,7 +29,7 @@
             </ListBox>
 
 
-            <ComboBox Name="searchBox" MinWidth="100" IsEditable="True" DropDownClosed="searchBox_SelectionChanged" HorizontalAlignment="Left"></ComboBox>
+            <ComboBox Name="searchBox" MinWidth="100" IsEditable="True" DropDownClosed="searchBox_SelectionChanged" HorizontalAlignment="Stretch"></ComboBox>
         </StackPanel>
 
     </Grid>

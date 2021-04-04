@@ -12,9 +12,10 @@
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}">
+     FontFamily="{DynamicResource MaterialDesignFont}"
+             HorizontalAlignment="Stretch">
 
-    <Grid Name="container" Height="32" Width="400" HorizontalAlignment="Left" VerticalAlignment="Center">
+    <Grid Name="container" Height="32" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Center">
         <TextBox Name="numVal" Width="56" TextAlignment="Center" FontSize="20" HorizontalAlignment="Left">000</TextBox>
         <Label x:Name="labelTitle" Content="Number" HorizontalAlignment="Right" VerticalAlignment="Center"/>
     </Grid>

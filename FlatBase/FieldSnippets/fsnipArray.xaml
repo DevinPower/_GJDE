@@ -13,11 +13,14 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-             HorizontalAlignment="Left">
+             HorizontalAlignment="Stretch">
 
-    <GroupBox Name="groupBox" Width="400" Height="200" BorderThickness="2" Header="Object References" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0" materialDesign:ShadowAssist.ShadowDepth="Depth3">
+    <GroupBox Name="groupBox" Height="200" BorderThickness="2" Header="Object References" Style="{DynamicResource MaterialDesignGroupBox}" Margin="0" materialDesign:ShadowAssist.ShadowDepth="Depth3">
         <Grid>
-            <ScrollViewer>
+            <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="FullSpan" Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="0">
                 <ListView Name="lView"></ListView></ScrollViewer>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Click="addItem">+</Button>

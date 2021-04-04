@@ -1699,3 +1699,5 @@ C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.Properti
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.csproj.GenerateResource.cache
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.csproj.CoreCompileInputs.cache
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.csproj.CopyComplete
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceSingleton.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceSingleton.baml

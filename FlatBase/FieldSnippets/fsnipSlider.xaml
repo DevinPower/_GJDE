@@ -13,11 +13,10 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-             Width="300"
-             HorizontalAlignment="Left">
+             HorizontalAlignment="Stretch">
 
     <Grid>
-        <Slider HorizontalAlignment="Left" Width="270" Name="Slider"/>
+        <Slider HorizontalAlignment="Stretch" Name="Slider" Margin="0, 0, 30, 0"/>
         <Label Name="NumDisplay" HorizontalAlignment="Right"></Label>
     </Grid>
 </UserControl>
