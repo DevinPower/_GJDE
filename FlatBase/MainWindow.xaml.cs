@@ -30,7 +30,7 @@ namespace FlatBase
         static EnumManager em = new EnumManager();
 
         public List<ObjectStructure> objectTemplates = new List<ObjectStructure>();
-        public Dictionary<string, List<string>> subclasses { get; set; }
+        public Dictionary<string, ObservableCollection<string>> subclasses { get; set; }
         List<StackPanel> stackProperties = new List<StackPanel>();
         
         public void loadDatabase(string fileName)
@@ -65,8 +65,8 @@ namespace FlatBase
 
         public MainWindow()
         {
-            database = new GJDB();
-            subclasses = new Dictionary<string, List<string>>();
+            subclasses = new Dictionary<string, ObservableCollection<string>>();
+            database = new GJDB(); 
         }
 
         private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
@@ -249,19 +249,18 @@ namespace FlatBase
                 MenuItem miSub = new MenuItem();
                 miSub.Header = "Subclass";
 
-                subclasses.Add(s[i], new List<string>());
+                //Console.WriteLine("Adding {0} to sub dict", s[i]);
+                subclasses.Add(s[i], new ObservableCollection<string>());
 
-                //Binding subBinding = new Binding();
-                //subBinding.Source = subclasses[s[i]];
-                //if (subclasses[s[i]] == null)
-                //    Console.WriteLine("no " + s[i] + "subclass ");
-                //subBinding.Path = new PropertyPath("subclasses[" + s[i] + "]");
-                //miSub.SetBinding(MenuItem.ItemsSourceProperty, subBinding);
-                miSub.DataContext = subclasses[s[i]];
-                miSub.ItemsSource = subclasses[s[i]];
-                //Console.WriteLine("added {0} to misub", subclasses[s[i]].Count.ToString());
+                Binding subBinding = new Binding();
+                subBinding.Converter = new Misc.SubclassMenuConverter(this);
+                subBinding.Source = this;
+                subBinding.Path = new PropertyPath("subclasses[" + s[i] + "]");
 
-                //TODO: Bind templates here
+                miSub.SetBinding(MenuItem.ItemsSourceProperty, subBinding);
+
+                //miSub.DataContext = subclasses[s[i]];
+                //miSub.ItemsSource = subclasses[s[i]];
 
                 additionalAddMenu.Items.Add(miATemp);
                 additionalAddMenu.Items.Add(miSub);
@@ -741,6 +740,14 @@ namespace FlatBase
         {
             Assistant.SetupWizard sw = new Assistant.SetupWizard();
             sw.Show();
+        }
+
+        public void addFromTemplate(string template)
+        {
+            Console.WriteLine("adding by template " + template);
+            int ind = tabMain.SelectedIndex;
+
+            database.data[ind].Add(loadManifest(template));
         }
     }
 }

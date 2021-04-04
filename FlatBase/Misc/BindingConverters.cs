@@ -168,6 +168,44 @@ namespace FlatBase.Misc
         }
     }
 
+    class SubclassMenuConverter: IValueConverter
+    {
+        MainWindow mwref;
+
+        public SubclassMenuConverter(MainWindow mw)
+        {
+            mwref = mw;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Console.WriteLine("starting to look");
+            if (value == null)
+                return null;
+            Console.WriteLine("NOT NULL");
+            ObservableCollection<string> idx = value as ObservableCollection<string>;
+            Console.WriteLine(idx.Count + "count");
+            List<object> toret = new List<object>();
+            foreach(string s in idx)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = s;
+                mi.Click += (rs, EventArgs) => { mwref.addFromTemplate(s); };
+
+                toret.Add(mi);
+                Console.WriteLine("FOUND ONE");
+
+            }
+
+            return toret;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class IntegerConverter : IValueConverter
     {
         public int EmptyStringValue = 0;

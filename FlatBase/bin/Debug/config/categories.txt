@@ -1,5 +1,4 @@
 Characters
 Items
 Monsters
->Boss
 Tuple
