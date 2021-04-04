@@ -154,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FieldSnippets\fsnipOReferenceSingleton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FieldSnippets\fsnipString.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -216,6 +220,9 @@
     </Compile>
     <Compile Include="FieldSnippets\fsnipArray.xaml.cs">
       <DependentUpon>fsnipArray.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FieldSnippets\fsnipOReferenceSingleton.xaml.cs">
+      <DependentUpon>fsnipOReferenceSingleton.xaml</DependentUpon>
     </Compile>
     <Compile Include="FieldSnippets\fsnipString.xaml.cs">
       <DependentUpon>fsnipString.xaml</DependentUpon>

@@ -474,6 +474,38 @@ namespace FlatBase
                     continue;
                 }
 
+                if (o is OReference)
+                {
+                    FieldSnippets.fsnipOReferenceSingleton fsor = new FieldSnippets.fsnipOReferenceSingleton("Spells", o as OReference,
+                        database.data[(o as OReference).getRA()]);
+
+                    //fsor.lView.ItemsSource = ((OReferenceList)o).refnames;
+
+                    MultiBinding mb = new MultiBinding();
+
+                    Binding lhs = new Binding();
+                    lhs.Path = new PropertyPath("REF");
+                    lhs.Source = o;
+
+                    Binding rhs = new Binding();
+                    rhs.Source = database.data[(o as OReference).getRA()];
+
+                    mb.Bindings.Add(lhs);
+                    mb.Bindings.Add(rhs);
+
+                    mb.Converter = new Misc.ORefSingleConverter();
+
+
+                    fsor.Display.DataContext = o;
+                    fsor.Display.SetBinding(Card.ContentProperty,
+                        mb);
+
+
+                    tar.Children.Add(fsor);
+                    c++;
+                    continue;
+                }
+
                 if (o is OReferenceList)
                 {
                     FieldSnippets.fsnipOReference fsor = new FieldSnippets.fsnipOReference("Spells", o as OReferenceList, 
@@ -663,6 +695,14 @@ namespace FlatBase
                     clipped = s[i].Split(' ')[2];
                     orl.setRA(Int32.Parse(clipped));
                     nost.FIELDS.Add(orl);
+                }
+
+                if (s[i][0] == 'R')
+                {
+                    OReference or = new OReference();
+                    clipped = s[i].Split(' ')[2];
+                    or.setRA(Int32.Parse(clipped));
+                    nost.FIELDS.Add(or);
                 }
 
                 if (s[i][0] == 'G')

@@ -42,7 +42,7 @@ namespace FlatBase
         }
 
         public void ContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {           
+        {
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs("REFS"));
@@ -67,7 +67,7 @@ namespace FlatBase
         public ObjectHeader(string name)
         {
             Name = name;
-            
+
         }
     }
 
@@ -80,6 +80,41 @@ namespace FlatBase
             values = new int[length];
             for (int i = 0; i < length; i++)
                 values[i] = 25;
+        }
+    }
+
+    [Serializable]
+    public class OReference : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public OReference()
+        {
+        }
+
+        public int refDB { get; set; }
+
+        public void setRA(int v)
+        {
+            refDB = v;
+        }
+
+        public int getRA()
+        {
+            return refDB;
+        }
+
+        int refVal;
+        public int REF
+        {
+            get
+            {
+                return refVal;
+            }
+            set
+            {
+                refVal = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("REF"));
+            }
         }
     }
 
@@ -119,28 +154,13 @@ namespace FlatBase
         {
             get
             {
-               return refVals;
+                return refVals;
             }
             set
             {
                 refVals = value;
             }
         }
-
-        /*[JsonIgnore]
-        public ObservableCollection<string> refnames
-        {
-            get
-            {
-                ObservableCollection<string> toret = new ObservableCollection<string>();
-                foreach(int i in REFS)
-                {
-                   //toret.Add(i.ToString("000") + ": " + MainWindow.database[refDB][i].Name);
-                }
-
-                return toret;
-            }
-        }*/
     }
 
     [Serializable]
@@ -176,12 +196,12 @@ namespace FlatBase
 
         public bool meetsFilter(ObservableCollection<string> terms)
         {
-            foreach(string s in terms)
+            foreach (string s in terms)
             {
                 if (Name.ToLower().Contains(s))
                     return true;
 
-                foreach(object f in FIELDS)
+                foreach (object f in FIELDS)
                 {
                     if (f is TagField)
                     {

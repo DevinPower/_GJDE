@@ -21,17 +21,16 @@ namespace FlatBase.FieldSnippets
     /// <summary>
     /// Interaction logic for fsnipBool.xaml
     /// </summary>
-    public partial class fsnipOReference : UserControl
+    public partial class fsnipOReferenceSingleton : UserControl
     {
-        OReferenceList orl;
+        OReference or;
         ObservableCollection<ObjectStructure> pullList;
 
-        public fsnipOReference(string title, OReferenceList refferal, ObservableCollection<ObjectStructure> pl)
+        public fsnipOReferenceSingleton(string title, OReference refferal, ObservableCollection<ObjectStructure> pl)
         {
             InitializeComponent();
 
-            groupBox.Header = "OReferenceList(Legacy) " + title;
-            orl = refferal;
+            or = refferal;
             pullList = pl;
         }
 
@@ -41,27 +40,9 @@ namespace FlatBase.FieldSnippets
             if (ord.ShowDialog() == true)
             {
                 OReferenceDialog content = ord.Content as OReferenceDialog;
-                orl.REFS.Add(ord.returnVal);
-                
-            }
-        }
+                or.REF = ord.returnVal;
 
-        private void LView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (lView.SelectedIndex != -1)
-            {
-                Remove.IsEnabled = true;
             }
-            else
-            {
-                Remove.IsEnabled = true;
-            }
-        }
-
-        private void Remove_Click(object sender, RoutedEventArgs e)
-        {
-            orl.REFS.RemoveAt(lView.SelectedIndex);
-            Remove.IsEnabled = false;
         }
     }
 }

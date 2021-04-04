@@ -138,6 +138,27 @@ namespace FlatBase.Misc
             throw new NotImplementedException();
         }
     }
+    class ORefSingleConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (values == null || values.Length != 2)
+                return null;
+
+            int idx = int.Parse(values[0].ToString());
+            ObservableCollection<ObjectStructure> collection = values[1] as ObservableCollection<ObjectStructure>;
+
+            if (collection == null)
+                return null;
+
+            return idx.ToString("000") + ": " + collection[idx].Name;
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     class ORefConverter : IMultiValueConverter
     {
@@ -157,6 +178,7 @@ namespace FlatBase.Misc
             foreach (int iR in idx)
             {
                 toret.Add(iR.ToString("000") + ": " + collection[iR].Name);
+                Console.WriteLine("added 1");
             }
 
             return toret;
