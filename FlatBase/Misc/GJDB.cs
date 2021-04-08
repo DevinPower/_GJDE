@@ -68,6 +68,12 @@ namespace FlatBase
             o.setObserver(ContentCollectionChangedsub);
         }
 
+        public void addItem(int dbc, ObjectStructure o)
+        {
+            data[dbc].Add(o);
+            o.setObserver(ContentCollectionChangedsub);
+        }
+
         public ObservableCollection<ObservableCollection<ObjectStructure>> data { get; set; }
 
         public string export()

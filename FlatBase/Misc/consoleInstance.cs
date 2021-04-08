@@ -13,6 +13,12 @@ using System.Collections.Specialized;
 
 namespace FlatBase.Misc
 {
+    public class parseNode
+    {
+        public string value = "";
+        public List<parseNode> parseNodes = new List<parseNode>();
+    }
+
     public class readData
     {
         consoleInstance _ci;
@@ -40,6 +46,11 @@ namespace FlatBase.Misc
         {
             _ci.output("echoed: " + s);
         }
+
+        public int add(int a, int b)
+        {
+            return a + b;
+        }
     }
 
     public class consoleInstance : INotifyPropertyChanged
@@ -63,67 +74,63 @@ namespace FlatBase.Misc
         public void input(string v)
         {
             history += v + "\n";
-            string[] args = v.Split(' ');
+            
             readData rd = new readData(this);
 
-            int i = 0;
-            while (i < args.Length)
+            /*MethodInfo theMethod = typeof(readData).GetMethod(args[i + 1]);
+            int c = theMethod.GetParameters().Length;
+
+            object[] arguments = new object[c];
+            for (int a = 0; a < c; a++)
             {
-                if (args[i][0] == '!')
-                {
-                    //TODO: close out previous control
-                    switch (args[i])
-                    {
-                        case "!textBox":
-                            //TODO: setup new textbox
-                            goto default;
-                        default:
-                            rd = new readData(this);
-                            i++;
-                            break;
-                    }
-                    continue;
-                }
-
-
-                if (args[i][0] == '-')
-                {
-                    switch (args[i])
-                    {
-                        case "-clear":
-                            history = "";
-                            i++;
-                            break;
-                        case "-o":
-                            output(args[i + 1]);
-                            i += 2;
-                            break;
-                        case "-n":
-                            rd.name = args[i + 1];
-                            i += 2;
-                            break;
-                        case "-order":
-                            rd.order = int.Parse(args[i + 1]);
-                            i += 2;
-                            break;
-                        case "-f":
-                            MethodInfo theMethod = typeof(readData).GetMethod(args[i + 1]);
-                            int c = theMethod.GetParameters().Length;
-
-                            object[] arguments = new object[c];
-                            for (int a = 0; a < c; a++)
-                            {
-                                arguments[a] = args[i + a + 2];
-                            }
-                            theMethod.Invoke(rd, arguments);
-                            i += 2 + c;
-                            break;
-                        default:
-                            output(args[i] + " not recognized");
-                            break;
-                    }
-                }
+                arguments[a] = args[i + a + 2];
             }
+            theMethod.Invoke(rd, arguments);
+            i += 2 + c;*/
+
+            string totalExpanded = "";
+
+            parseInput(v);
+        }
+
+        public string parseInput(string input)
+        {
+            string[] args = input.Split(' ');
+
+            int i = 0;
+            List<int> closeparams = new List<int>();
+            parseNode pn = new parseNode();
+            
+            foreach(string s in args)
+            {
+                int level = closeparams.Count - 1;
+                if (s[0] == '-')
+                {
+                    string handleString = s;
+                    handleString = handleString.Remove(0, 1);
+                    MethodInfo theMethod = typeof(readData).GetMethod(handleString);
+                    int c = theMethod.GetParameters().Length;
+                    closeparams.Add(c);
+                    args[i] = "COMMAND: " + handleString + " " + c.ToString();
+                    
+
+                }
+                else
+                {
+                    closeparams[closeparams.Count - 1]--;
+                    args[i] = args[i] + ", " + closeparams[closeparams.Count - 1];
+                    
+                    if (closeparams[closeparams.Count - 1] == 0)
+                        closeparams.Remove(closeparams.Last());
+                }
+                i++;
+            }
+
+            foreach(string s in args)
+                output(s);
+            
+
+            return "";
         }
 
         public consoleInstance()

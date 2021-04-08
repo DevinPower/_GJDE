@@ -285,6 +285,7 @@ namespace FlatBase
                     pureObject.FIELDS[i] = o;
                 }
             }
+
             return pureObject;
         }
 

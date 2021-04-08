@@ -205,11 +205,12 @@ namespace FlatBase.Misc
             if (value == null)
                 return null;
             Console.WriteLine("NOT NULL");
-            ObservableCollection<string> idx = value as ObservableCollection<string>;
+            ObservableCollection<Misc.SubclassHelper> idx = value as ObservableCollection<Misc.SubclassHelper>;
             Console.WriteLine(idx.Count + "count");
             List<object> toret = new List<object>();
-            foreach(string s in idx)
+            foreach(Misc.SubclassHelper h in idx)
             {
+                string s = h.name;
                 MenuItem mi = new MenuItem();
                 mi.Header = s;
                 mi.Click += (rs, EventArgs) => { mwref.addFromTemplate(s); };

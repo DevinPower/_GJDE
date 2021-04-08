@@ -30,7 +30,7 @@ namespace FlatBase
         static EnumManager em = new EnumManager();
 
         public List<ObjectStructure> objectTemplates = new List<ObjectStructure>();
-        public Dictionary<string, ObservableCollection<string>> subclasses { get; set; }
+        public Misc.SubclassDict scd = new Misc.SubclassDict();
         List<StackPanel> stackProperties = new List<StackPanel>();
         
         public void loadDatabase(string fileName)
@@ -65,7 +65,6 @@ namespace FlatBase
 
         public MainWindow()
         {
-            subclasses = new Dictionary<string, ObservableCollection<string>>();
             database = new GJDB(); 
         }
 
@@ -73,8 +72,8 @@ namespace FlatBase
         {
             int ind = tabMain.SelectedIndex;
             string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
-            database.data[index].Add(((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy(loadManifest(n)));
-            lv.Items.Refresh();
+            database.addItem(index, ((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy(loadManifest(n)));
+            //lv.Items.Refresh();
         }
 
         private void Entry_Delete(object sender, RoutedEventArgs e, ListView lv, int index)
@@ -130,6 +129,7 @@ namespace FlatBase
         public void loadCategories()
         {
             string[] s = File.ReadAllLines("config/categories.txt");
+
             for (int i = 0; i < s.Count(); i++)
             {
                 if (s[i][0] == '#')
@@ -138,9 +138,9 @@ namespace FlatBase
                 if (s[i][0] == '>')
                 {
                     s[i] = s[i].Remove(0, 1);
-                    if (!subclasses.ContainsKey(s[i - 1]))
+                    if (!scd.subclasses.ContainsKey(s[i - 1]))
                         Console.WriteLine("dict not found");
-                    subclasses[s[i - 1]].Add(s[i]);
+                    scd.subclasses[s[i - 1]].Add(new Misc.SubclassHelper(s[i]));
 
                     continue;
                 }
@@ -250,11 +250,12 @@ namespace FlatBase
                 miSub.Header = "Subclass";
 
                 //Console.WriteLine("Adding {0} to sub dict", s[i]);
-                subclasses.Add(s[i], new ObservableCollection<string>());
+                scd.addTable(s[i]);
 
                 Binding subBinding = new Binding();
                 subBinding.Converter = new Misc.SubclassMenuConverter(this);
-                subBinding.Source = this;
+                subBinding.Source = scd;
+                
                 subBinding.Path = new PropertyPath("subclasses[" + s[i] + "]");
 
                 miSub.SetBinding(MenuItem.ItemsSourceProperty, subBinding);
@@ -496,8 +497,8 @@ namespace FlatBase
                     mb.Converter = new Misc.ORefSingleConverter();
 
 
-                    fsor.Display.DataContext = o;
-                    fsor.Display.SetBinding(Card.ContentProperty,
+                    fsor.textDisplay.DataContext = o;
+                    fsor.textDisplay.SetBinding(Label.ContentProperty,
                         mb);
 
 

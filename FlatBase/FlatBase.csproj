@@ -278,6 +278,7 @@
     <Compile Include="Misc\SearchFilter.xaml.cs">
       <DependentUpon>SearchFilter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Misc\SubclassHelper.cs" />
     <Compile Include="Misc\TagManager.cs" />
     <Compile Include="Misc\TupleStructure.cs" />
     <Compile Include="Misc\WeightedGroup.cs" />

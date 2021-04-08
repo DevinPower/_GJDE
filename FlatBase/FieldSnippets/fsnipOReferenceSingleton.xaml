@@ -15,8 +15,10 @@
      FontFamily="{DynamicResource MaterialDesignFont}"
              HorizontalAlignment="Stretch">
     <Grid HorizontalAlignment="Stretch">
-        <materialDesign:Card HorizontalAlignment="Stretch" Height="32" Name="Display"/>
-        <Button Width="50"  Click="addItem" HorizontalAlignment="Right">
+        <materialDesign:Card HorizontalAlignment="Stretch" Height="32" Name="Display">
+            <Label Name="textDisplay" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,50,0">Text</Label>
+        </materialDesign:Card>
+        <Button Width="50"  Click="addItem" HorizontalAlignment="Right" Margin="100,0,0,0">
             <materialDesign:PackIcon Kind="CheckboxBlankCircleOutline"/>
         </Button>
     </Grid>
