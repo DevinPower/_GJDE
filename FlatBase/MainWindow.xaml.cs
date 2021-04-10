@@ -88,17 +88,19 @@ namespace FlatBase
         }
 
         private void SelectionChange(object sender, RoutedEventArgs e)
-        {      
+        {
+            //TODO: FIX  
             ListView lvsender = (ListView)sender;
             stackProperties[tabMain.SelectedIndex].IsEnabled = true;
-
+            Console.WriteLine("SC {0}", lvsender.SelectedIndex);
             if (lvsender.SelectedIndex == -1)
             {
+                return;
                 stackProperties[tabMain.SelectedIndex].IsEnabled = false;
                 return;
             }
 
-            buildOSView(stackProperties[tabMain.SelectedIndex], (ObjectStructure)lvsender.Items[lvsender.SelectedIndex], 0);
+            buildOSView(stackProperties[tabMain.SelectedIndex], ((Misc.HierarchyItemViewer)lvsender.Items[lvsender.SelectedIndex]).refObj, 0);
         }
 
         private void Add_Click(object sender, RoutedEventArgs e, ListView lv)
@@ -179,7 +181,7 @@ namespace FlatBase
                 ListView lv = new ListView();
                 lv.HorizontalAlignment = HorizontalAlignment.Left;
                 lv.VerticalAlignment = VerticalAlignment.Top;
-                lv.Width = 180;
+                lv.Width = 180;     
                 lv.Margin = new Thickness(0, 96, 0, 0);
 
 

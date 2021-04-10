@@ -13,23 +13,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FlatBase.FieldSnippets
+namespace FlatBase.Misc
 {
     /// <summary>
-    /// Interaction logic for fsnipBool.xaml
+    /// Interaction logic for HierarchyItemViewer.xaml
     /// </summary>
-    public partial class fsnipString : UserControl
+    public partial class HierarchyItemViewer : UserControl
     {
-        public fsnipString(int height)
+        public ObjectStructure refObj;
+        public HierarchyItemViewer(string n, Brush c, ObjectStructure sr)
         {
             InitializeComponent();
-
-            textValue.Height = 32;// height * 48;
-        }
-
-        public void bolden()
-        {
-            //textValue.SelectionBrush = new bold
+            labelDisplay.Content = n;
+            labelDisplay.Foreground = c;
+            refObj = sr;
         }
     }
 }

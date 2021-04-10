@@ -1701,3 +1701,5 @@ C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.csproj.C
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FlatBase.csproj.CopyComplete
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceSingleton.g.cs
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceSingleton.baml
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyItemViewer.g.cs
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyItemViewer.baml

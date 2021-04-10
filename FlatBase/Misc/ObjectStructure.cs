@@ -178,7 +178,20 @@ namespace FlatBase
             }
         }
 
-        public bool excludeExport { get; set; }
+        bool _ee;
+        public bool excludeExport
+        {
+            get 
+            {
+                return _ee;
+            }
+            set
+            {
+                _ee = value;
+                //TODO: Fix workaround here
+                Name += "";
+            }
+        }
 
         int nameOverride = -1;
         string _handledName;

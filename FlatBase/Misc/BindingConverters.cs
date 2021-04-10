@@ -74,7 +74,7 @@ namespace FlatBase.Misc
             if (collection == null)
                 return null;
 
-            List<ObjectStructure> toret = new List<ObjectStructure>();
+            List<HierarchyItemViewer> toret = new List<HierarchyItemViewer>();
 
             int i = 0;
             foreach (ObjectStructure os in collection)
@@ -96,7 +96,16 @@ namespace FlatBase.Misc
                     validated = true;
 
                 if (validated)
-                    toret.Add(os);
+                {
+                    Brush c = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+
+                    if (os.excludeExport)
+                        c = new SolidColorBrush(Color.FromRgb(155, 155, 155));
+
+                    HierarchyItemViewer hIV = new HierarchyItemViewer(os.Name, c, os);
+
+                    toret.Add(hIV);
+                }
                 i++;
             }
 
