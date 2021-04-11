@@ -84,7 +84,7 @@ namespace FlatBase
 
         private void Entry_Exclude(object sender, RoutedEventArgs e, ListView lv, int index)
         {
-            ((ObjectStructure)database.data[index][lv.SelectedIndex]).excludeExport = true;
+            ((ObjectStructure)database.data[index][lv.SelectedIndex]).excludeExport ^= true;
         }
 
         private void SelectionChange(object sender, RoutedEventArgs e)

@@ -13,18 +13,21 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-             HorizontalAlignment="Stretch" MinHeight="48" Width="400">
-    <StackPanel>
+             HorizontalAlignment="Stretch" MinHeight="48">
+    <StackPanel HorizontalAlignment="Stretch">
+        
         <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Name ="textValue" HorizontalAlignment="Stretch" Height="48" Margin="0,0,0,0" VerticalAlignment="Top" AcceptsReturn="True"/>
-
-            <!-- the following based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons -->
+        
+        <!-- the following based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons -->
         <ListBox Style="{StaticResource MaterialDesignToolToggleFlatListBox}">
                 <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatItalic}"/>
                 <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatBold}"/>
                 <ListBoxItem Content="{materialDesign:PackIcon Kind=Palette}"/>
                 <ListBoxItem Content="{materialDesign:PackIcon Kind=Film}"/>
         </ListBox>
-       
+
+        <Label MouseDown="Label_MouseDown" MouseUp="Label_MouseUp" Cursor="SizeNS" Content="{materialDesign:PackIcon Kind=ResizeBottomRight}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+
     </StackPanel>
 
 </UserControl>
