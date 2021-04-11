@@ -1703,3 +1703,5 @@ C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceS
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipOReferenceSingleton.baml
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyItemViewer.g.cs
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyItemViewer.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\HierarchyItemViewer.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\HierarchyItemViewer.baml

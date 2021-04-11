@@ -276,6 +276,7 @@ namespace FlatBase
                 bB.Height = 36;
                 bB.HorizontalAlignment = HorizontalAlignment.Right;
                 bB.ContextMenu = additionalAddMenu;
+                bB.Click += (rs, EventArgs) => { bB.ContextMenu.IsOpen = true; };
 
                 Grid bGrid = new Grid();
                 bGrid.Children.Add(bA);
