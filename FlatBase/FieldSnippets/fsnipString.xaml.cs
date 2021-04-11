@@ -29,26 +29,22 @@ namespace FlatBase.FieldSnippets
             InitializeComponent();
 
             textValue.Height = 32;//height * 48;
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 5);
         }
 
         private void Label_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Console.WriteLine("PRESS");
             pHeight = textValue.Height;
-            sPos = Mouse.GetPosition(textValue);
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            sPos = Mouse.GetPosition(textValue); 
             dispatcherTimer.Start();
-        }
-
-        private void Label_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Console.WriteLine("RELEASE");
-            dispatcherTimer.Stop();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
+            if (Mouse.LeftButton == MouseButtonState.Released && dispatcherTimer.IsEnabled)
+                dispatcherTimer.Stop();
             textValue.Height = Math.Max(0, pHeight + Mouse.GetPosition(textValue).Y - sPos.Y);
         }
     }

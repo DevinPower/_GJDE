@@ -33,7 +33,7 @@
         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
             
             <Button Click="Button_Click">Parse</Button>
-            <Button>Confirm</Button>
+            <Button Click="Button_Click_1">Confirm</Button>
             
         </StackPanel>
     </Grid>

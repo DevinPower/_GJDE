@@ -26,7 +26,7 @@
                 <ListBoxItem Content="{materialDesign:PackIcon Kind=Film}"/>
         </ListBox>
 
-        <Label MouseDown="Label_MouseDown" MouseUp="Label_MouseUp" Cursor="SizeNS" Content="{materialDesign:PackIcon Kind=ResizeBottomRight}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Label MouseDown="Label_MouseDown" Cursor="SizeNS" Content="{materialDesign:PackIcon Kind=ResizeBottomRight}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
     </StackPanel>
 

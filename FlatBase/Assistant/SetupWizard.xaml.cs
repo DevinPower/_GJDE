@@ -30,6 +30,7 @@ namespace FlatBase.Assistant
     public class fieldHelper : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public bool list { get; set; }
 
         readonly string[] generics = { "int", "string", "bool", "float", "double" };
         string _name;
@@ -68,15 +69,20 @@ namespace FlatBase.Assistant
             }
         }
 
-        public fieldHelper(string n, string t)
+        public fieldHelper(string n, string t, bool l)
         {
             _name = n;
             _type = t;
+            list = l;
         }
 
         public override string ToString()
         {
-            return Name + " " + Type;
+            string lDisp = "";
+
+            if (list)
+                lDisp = "[]";
+            return Name + " " + lDisp + Type;
         }
     }
 
@@ -85,6 +91,20 @@ namespace FlatBase.Assistant
         public string name { get; set; }
         public ObservableCollection<fieldHelper> fields { get; set; }
         public ObservableCollection<string> dependencies = new ObservableCollection<string>();
+
+        public void toDocument()
+        {
+            Console.WriteLine(name);
+            foreach(string s in dependencies)
+            {
+                Console.WriteLine("I " + s);
+            }
+
+            foreach (fieldHelper fh in fields)
+            {
+                Console.WriteLine("  -> " + fh.Name + " " + fh.Type + fh.list.ToString());
+            }
+        }
     }
 
     /// <summary>
@@ -115,62 +135,85 @@ namespace FlatBase.Assistant
             loadedScripts.ContextMenu = cm;
         }
 
-        public string loadFile()
+        public string[] loadFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
 
+            string[] ret;
             if (openFileDialog.ShowDialog() == true)
-                return File.ReadAllText(openFileDialog.FileName);
+            {
+                Console.WriteLine(openFileDialog.FileNames.Count());
+                ret = new string[openFileDialog.FileNames.Count()];
+                int i = 0;
+                foreach (string s in openFileDialog.FileNames)
+                {
+                    ret[i] = File.ReadAllText(s);
+                    i++;
+                }
 
-            return "";
+                return ret;
+            }
+
+            return null;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string code = loadFile();
+            string[] code = loadFile();
 
-            loadedScripts.ItemsSource = loadedClasses;
-            
-            var syntaxTree = CSharpSyntaxTree.ParseText(code);
+            if (code == null)
+                return;
 
-            var classes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
-
-            foreach (ClassDeclarationSyntax c in classes)
+            foreach (string s in code)
             {
-                string[] identifierNames = c.DescendantNodes()
-                .OfType<PropertyDeclarationSyntax>().Select(v => v.Identifier.Text)
-                .ToArray();
+                Console.Write("AAA");
+                loadedScripts.ItemsSource = loadedClasses;
 
-                object[] identifierTypes = c.DescendantNodes()
-                .OfType<PropertyDeclarationSyntax>().Select(v => v.Type)
-                .ToArray();
-                //Console.WriteLine(c.BaseList.ToString());
-                loadedClasses.Add(c.Identifier.ToString());
+                var syntaxTree = CSharpSyntaxTree.ParseText(s);
 
-                ObservableCollection<fieldHelper> vO = new ObservableCollection<fieldHelper>();
-                ConvertedClass cc = new ConvertedClass();
-                cc.fields = vO;
-                if (c.BaseList != null)
+                var classes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
+
+                foreach (ClassDeclarationSyntax c in classes)
                 {
-                    string clean = c.BaseList.ToString();
-                    clean = clean.Replace(" ", "");
-                    clean = clean.Replace(":", "");
-                    Console.WriteLine("adding " + clean);
-                    cc.dependencies.Add(clean);
-                }
-                cc.name = c.Identifier.ToString();
-                inspectedClasses.Add(cc);
+                    string[] identifierNames = c.DescendantNodes()
+                    .OfType<PropertyDeclarationSyntax>().Select(v => v.Identifier.Text)
+                    .ToArray();
 
-                for (int i = 0; i < identifierNames.Count(); i++)
-                {
-                    string tS = "";
-                    tS = identifierTypes[i].ToString();
-                    TypeSyntax t = identifierTypes[i] as TypeSyntax;
+                    object[] identifierTypes = c.DescendantNodes()
+                    .OfType<PropertyDeclarationSyntax>().Select(v => v.Type)
+                    .ToArray();
+                    //Console.WriteLine(c.BaseList.ToString());
+                    loadedClasses.Add(c.Identifier.ToString());
 
-                    if (t.GetFirstToken().ToString() == "List")
-                        tS = t.GetFirstToken().GetNextToken().GetNextToken().ToString();
+                    ObservableCollection<fieldHelper> vO = new ObservableCollection<fieldHelper>();
+                    ConvertedClass cc = new ConvertedClass();
+                    cc.fields = vO;
+                    if (c.BaseList != null)
+                    {
+                        string clean = c.BaseList.ToString();
+                        clean = clean.Replace(" ", "");
+                        clean = clean.Replace(":", "");
+                        Console.WriteLine("adding " + clean);
+                        cc.dependencies.Add(clean);
+                    }
+                    cc.name = c.Identifier.ToString();
+                    inspectedClasses.Add(cc);
 
-                    vO.Add(new fieldHelper(identifierNames[i], tS));
+                    for (int i = 0; i < identifierNames.Count(); i++)
+                    {
+                        string tS = "";
+                        tS = identifierTypes[i].ToString();
+                        TypeSyntax t = identifierTypes[i] as TypeSyntax;
+                        bool l = false;
+                        if (t.GetFirstToken().ToString() == "List")
+                        {
+                            tS = t.GetFirstToken().GetNextToken().GetNextToken().ToString();
+                            l = true;
+                        }
+
+                        vO.Add(new fieldHelper(identifierNames[i], tS, l));
+                    }
                 }
             }
         }
@@ -183,6 +226,14 @@ namespace FlatBase.Assistant
             items.Source = this;
 
             inspector.SetBinding(ListView.ItemsSourceProperty, items);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            foreach(ConvertedClass cc in inspectedClasses)
+            {
+                cc.toDocument();
+            }
         }
     }
 }
