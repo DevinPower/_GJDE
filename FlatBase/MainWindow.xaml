@@ -10,14 +10,14 @@
         xmlns:local="clr-namespace:FlatBase"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="FlatDB" Height="678.5" Width="800"
+        Title="_GJDE" Height="678.5" Width="800"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}" Loaded="Window_Loaded">
+     FontFamily="{DynamicResource MaterialDesignFont}" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid Margin="0,0,0,0">
         <Menu Margin="0,0,0,112">
             <MenuItem Header="File">

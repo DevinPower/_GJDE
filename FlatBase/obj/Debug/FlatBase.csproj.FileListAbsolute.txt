@@ -1709,3 +1709,9 @@ C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipCode.g.cs
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipCode.baml
 C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.dll
 C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.xml
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.dll
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.xml
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FieldSnippets\fsnipCode.g.cs
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FieldSnippets\fsnipCode.baml
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\SplashScreen.g.cs
+C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\SplashScreen.baml

@@ -1,0 +1,55 @@
+﻿<Window x:Class="FlatBase.Misc.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FlatBase.Misc"
+        mc:Ignorable="d"
+        Title="SplashScreen" Height="450" Width="800" WindowStyle="None" Background="#FF3F3E3E" Topmost="True" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Label Content="__GJDE" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="84" Width="644" Foreground="#DDA5BDC0" FontSize="48"/>
+        <Border BorderBrush="Black" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Height="278" Margin="63,141,0,0" VerticalAlignment="Top" Width="272"/>
+        <Label Content="Open Recent" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Height="42" Width="261" Foreground="#DDA5BDC0" FontSize="24"/>
+        <Label Content="Get Started" HorizontalAlignment="Left" Margin="529,94,0,0" VerticalAlignment="Top" Height="42" Width="130" Foreground="#DDA5BDC0" FontSize="24"/>
+        <StackPanel HorizontalAlignment="Left" Height="292" Margin="529,141,0,0" VerticalAlignment="Top" Width="232">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,10,0,0"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+                <Grid Width="232" Height="64">
+                    <Label Margin="32, 0, 0, 0" Content="New Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
+                        Create a new empty project.
+                    </Label>
+                </Grid>
+            </Button>
+
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+                <Grid Width="232" Height="64">
+                    <Label Margin="32, 0, 0, 0" Content="Open Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
+                        Load a project.
+                    </Label>
+                </Grid>
+            </Button>
+
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+                <Grid Width="232" Height="64">
+                    <Label Margin="32, 0, 0, 0" Content="Linked Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+                    <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
+                        Create a codebase linked project.
+                    </Label>
+                </Grid>
+            </Button>
+
+            <Label Foreground="#DD6067E7" HorizontalAlignment="Center">Visit the project on Github</Label>
+
+
+        </StackPanel>
+        <Image HorizontalAlignment="Left" Height="96" Margin="725,-37,-27.4,0" VerticalAlignment="Top" Width="96" Source="logoGreeble.png" RenderTransformOrigin="1.041,0.124"/>
+
+    </Grid>
+</Window>

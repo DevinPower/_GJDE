@@ -67,7 +67,9 @@ namespace FlatBase
 
         public MainWindow()
         {
-            database = new GJDB(); 
+            database = new GJDB();
+            Misc.SplashScreen ss = new Misc.SplashScreen();
+            ss.Show();
         }
 
         private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
