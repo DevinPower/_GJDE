@@ -38,7 +38,8 @@ namespace FlatBase.FieldSnippets
             Console.WriteLine("PRESS");
             pHeight = textValue.Height;
             sPos = Mouse.GetPosition(textValue); 
-            dispatcherTimer.Start();
+            if (!dispatcherTimer.IsEnabled)
+                dispatcherTimer.Start();
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -46,6 +47,42 @@ namespace FlatBase.FieldSnippets
             if (Mouse.LeftButton == MouseButtonState.Released && dispatcherTimer.IsEnabled)
                 dispatcherTimer.Stop();
             textValue.Height = Math.Max(0, pHeight + Mouse.GetPosition(textValue).Y - sPos.Y);
+        }
+
+        private void Button_Italic(object sender, RoutedEventArgs e)
+        {
+            tag("i");
+        }
+
+        private void Button_Bold(object sender, RoutedEventArgs e)
+        {
+            tag("b");
+        }
+
+        private void Button_Underline(object sender, RoutedEventArgs e)
+        {
+            tag("u");
+        }
+
+        public void tag(string notation)
+        {
+            string open = "<" + notation + ">";
+            string close = "<" + notation + "/>";
+
+
+            if (textValue.SelectionLength == 0)
+            {
+                textValue.Text += open;
+            }
+            else
+            {
+                string sVal = textValue.Text;
+                sVal = sVal.Insert(textValue.SelectionStart + textValue.SelectionLength, close);
+                sVal = sVal.Insert(textValue.SelectionStart, open);
+
+
+                textValue.Text = sVal;
+            }
         }
     }
 }

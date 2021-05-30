@@ -16,14 +16,17 @@
              Width="240"
              Height="32">
     <StackPanel Orientation="Horizontal">
-        <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="116">
+        <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="98">
             <TextBox VerticalAlignment="Center" Name="fhLabel">Name</TextBox>
         </materialDesign:Card>
         <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="58">
                           <Label VerticalAlignment="Center" Name="fhType">Type</Label>   
         </materialDesign:Card>
-        <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="58">
+        <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="18">
             <Label VerticalAlignment="Center" Name="fhStatus">Status</Label>
+        </materialDesign:Card>
+        <materialDesign:Card HorizontalAlignment="Left" Margin="2, 2, 0, 0" VerticalAlignment="Top" Height="28" Width="58">
+            <ComboBox Name="variantCombo"></ComboBox>
         </materialDesign:Card>
     </StackPanel>
 </UserControl>

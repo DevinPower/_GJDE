@@ -18,6 +18,24 @@ using System.Collections.ObjectModel;
 
 namespace FlatBase.Misc
 {
+    class BoolColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            bool input = (bool)value;
+
+            if (input)
+                return Color.FromRgb(155, 155, 155);
+
+            return Color.FromRgb(0, 0, 0);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class AStructConverter : IValueConverter
     {
         MainWindow refmw;
@@ -97,12 +115,30 @@ namespace FlatBase.Misc
 
                 if (validated)
                 {
-                    Brush c = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+                    SolidColorBrush c = new SolidColorBrush(Color.FromRgb(0, 0, 0));
 
                     if (os.excludeExport)
                         c = new SolidColorBrush(Color.FromRgb(155, 155, 155));
 
-                    HierarchyItemViewer hIV = new HierarchyItemViewer(os.Name, c, os);
+                    HierarchyItemViewer hIV = new HierarchyItemViewer(c, os);
+
+                    hIV.labelDisplay.DataContext = os;
+                    Binding textBind = new Binding();
+                    textBind.Path = new PropertyPath("Name");
+                    textBind.Source = os;
+                    textBind.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    hIV.labelDisplay.SetBinding(Label.ContentProperty, textBind);
+
+                    BoolColorConverter bcc = new BoolColorConverter();
+                    Binding b = new Binding();
+
+                    b.Converter = bcc;
+                    b.Path = new PropertyPath("excludeExport");
+                    b.Source = os;
+                    b.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    BindingOperations.SetBinding(hIV.colorDisplay, SolidColorBrush.ColorProperty, b);
 
                     toret.Add(hIV);
                 }
@@ -134,7 +170,7 @@ namespace FlatBase.Misc
                 toret.Add(os);
             }*/
 
-            for (int i = 0; i < collection.Count; i++)
+                    for (int i = 0; i < collection.Count; i++)
             {
                 toret.Add(Color.FromRgb(255, 0, 0));
             }
@@ -160,6 +196,8 @@ namespace FlatBase.Misc
             if (collection == null)
                 return null;
 
+            if (idx > collection.Count - 1 || collection[idx] == null)
+                return "Empty Array";
             return idx.ToString("000") + ": " + collection[idx].Name;
         }
 
@@ -223,6 +261,46 @@ namespace FlatBase.Misc
                 MenuItem mi = new MenuItem();
                 mi.Header = s;
                 mi.Click += (rs, EventArgs) => { mwref.addFromTemplate(s); };
+
+                toret.Add(mi);
+                Console.WriteLine("FOUND ONE");
+
+            }
+
+            return toret;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    class TemplateMenuConverter : IValueConverter
+    {
+        MainWindow mwref;
+
+        public TemplateMenuConverter(MainWindow mw)
+        {
+            mwref = mw;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            Console.WriteLine("starting to look");
+            if (value == null)
+                return null;
+            Console.WriteLine("NOT NULL");
+            ObservableCollection<Misc.SubclassHelper> idx = value as ObservableCollection<Misc.SubclassHelper>;
+            Console.WriteLine(idx.Count + "count");
+            List<object> toret = new List<object>();
+            foreach (Misc.SubclassHelper h in idx)
+            {
+                string s = h.name;
+                MenuItem mi = new MenuItem();
+                mi.Header = s;
+                mi.Click += (rs, EventArgs) => { mwref.addFromData(s); };
 
                 toret.Add(mi);
                 Console.WriteLine("FOUND ONE");
@@ -379,7 +457,16 @@ namespace FlatBase.Misc
                     {
                         foreach(Assistant.fieldHelper fh in vw.fields)
                         {
-                            Assistant.fieldDisplay fd = new Assistant.fieldDisplay(fh);
+                            List<string> sList = new List<string>();
+                            if (Assistant.SetupWizard.variants.ContainsKey(fh.Type))
+                            {
+                                List<Assistant.variantWrapper> vList = Assistant.SetupWizard.variants[fh.Type];
+
+                                foreach (Assistant.variantWrapper vwd in vList)
+                                    sList.Add(vwd.display);
+                            }
+
+                            Assistant.fieldDisplay fd = new Assistant.fieldDisplay(fh, sList);
                             fd.IsEnabled = false;
                             toret.Add(fd);
                         }
@@ -389,9 +476,20 @@ namespace FlatBase.Misc
             }
 
             foreach (Assistant.fieldHelper os in collection)
-            {
+            { 
+                List<string> sList = new List<string>();
                 //toret.Add(os);
-                toret.Add(new Assistant.fieldDisplay(os));
+                if (Assistant.SetupWizard.variants.ContainsKey(os.Type))
+                { 
+
+                    List<Assistant.variantWrapper> vList = Assistant.SetupWizard.variants[os.Type];
+
+                    
+                    foreach (Assistant.variantWrapper vwd in vList)
+                        sList.Add(vwd.display);
+                }
+
+                toret.Add(new Assistant.fieldDisplay(os, sList));
             }
 
             return toret;//collection[idx.Value].Name;

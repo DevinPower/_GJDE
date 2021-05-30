@@ -38,7 +38,7 @@ namespace FlatBase
             refVals.CollectionChanged += ContentCollectionChanged;
             pureName = defVal;
             parent = mb;
-            Console.WriteLine(parent.Name + " as parent");
+            //Console.WriteLine(parent.Name + " as parent");
         }
 
         public void ContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -52,10 +52,8 @@ namespace FlatBase
 
         public void add()
         {
-            //ObjectStructure os = new ObjectStructure();
-            Console.WriteLine("b new" + parent.Name);
-
-            REFS.Add(MainWindow.loadManifest(pureName, parent));
+            Console.WriteLine("pure name is " + pureName);
+            REFS.Add(MainWindow.loadManifest(pureName, parent, null, true));
         }
     }
 
@@ -188,8 +186,8 @@ namespace FlatBase
             set
             {
                 _ee = value;
-                //TODO: Fix workaround here
-                Name += "";
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("excludeExport"));
             }
         }
 
@@ -264,6 +262,7 @@ namespace FlatBase
             FIELDS = new ObservableCollection<object>();
             Name = "New Entry";
             fields.CollectionChanged += ContentCollectionChanged;
+            
         }
 
         public void setObserver(NotifyCollectionChangedEventHandler o)
@@ -274,6 +273,37 @@ namespace FlatBase
         public override string ToString()
         {
             return Name;
+        }
+
+        public string getData()
+        {
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+
+            return JsonConvert.SerializeObject(this, deserializeSettings);
+        }
+
+        public static ObjectStructure fromString(string s, ObjectStructure pureObject)
+        {
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+
+            ObjectStructure OS = JsonConvert.DeserializeObject<ObjectStructure>(s);
+
+            for (int i = 0; i < OS.fields.Count; i++)
+            {
+                object o = OS.fields[i];
+                if (o is Newtonsoft.Json.Linq.JObject)
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    object RO = serializer.Deserialize(new JTokenReader(o as JToken), pureObject.FIELDS[i].GetType());
+                    pureObject.FIELDS[i] = RO;
+                }
+                else
+                {
+                    pureObject.FIELDS[i] = o;
+                }
+            }
+
+            return pureObject;
         }
 
         public ObjectStructure Copy(ObjectStructure pureObject)

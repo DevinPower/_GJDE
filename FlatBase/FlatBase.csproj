@@ -41,6 +41,9 @@
     <Reference Include="Humanizer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
       <HintPath>..\packages\Humanizer.Core.2.2.0\lib\netstandard1.0\Humanizer.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=6.1.1.20, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>packages\AvalonEdit.6.1.1\lib\net45\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=1.2.6.1513, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.2.6\lib\net45\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -188,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FieldSnippets\fsnipCode.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="FieldSnippets\fsnipTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -246,6 +253,9 @@
     </Compile>
     <Compile Include="FieldSnippets\fsnipSlider.xaml.cs">
       <DependentUpon>fsnipSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FieldSnippets\fsnipCode.xaml.cs">
+      <DependentUpon>fsnipCode.xaml</DependentUpon>
     </Compile>
     <Compile Include="FieldSnippets\fsnipTemplate.xaml.cs">
       <DependentUpon>fsnipTemplate.xaml</DependentUpon>

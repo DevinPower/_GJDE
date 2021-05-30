@@ -20,18 +20,9 @@ namespace FlatBase.Assistant
     /// </summary>
     public partial class fieldDisplay : UserControl
     {
-        public fieldDisplay(fieldHelper fh)
+        public fieldDisplay(fieldHelper fh, List<string> v)
         {
             InitializeComponent();
-
-            /*
-             *                     FieldSnippets.fsnipBool fsb = new FieldSnippets.fsnipBool();
-                    fsb.labelTitle.Content = "USABLE";
-                    fsb.toggleVal.Content = "U";
-
-                    fsb.toggleVal.DataContext = os;
-                    fsb.toggleVal.SetBinding(ToggleButton.IsCheckedProperty,
-                        new Binding() { Path = new PropertyPath("FIELDS[" + c + "]"), Source = os });*/
 
             fhLabel.DataContext = fh;
             fhLabel.SetBinding(TextBox.TextProperty, new Binding() { Path = new PropertyPath("Name"), Source = fh });
@@ -41,6 +32,11 @@ namespace FlatBase.Assistant
 
             fhStatus.DataContext = fh;
             fhStatus.SetBinding(Label.ContentProperty, new Binding() { Path = new PropertyPath("Status"), Source = fh });
+
+            variantCombo.ItemsSource = v;
+
+            variantCombo.DataContext = fh;
+            variantCombo.SetBinding(ComboBox.SelectedItemProperty, new Binding() { Path = new PropertyPath("Variant"), Source = fh });
         }
     }
 }

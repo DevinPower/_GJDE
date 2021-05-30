@@ -29,9 +29,11 @@ namespace FlatBase
         public GJDB database;
         static EnumManager em = new EnumManager();
 
-        public List<ObjectStructure> objectTemplates = new List<ObjectStructure>();
+        public Misc.SubclassDict objectTemplates = new Misc.SubclassDict();
         public Misc.SubclassDict scd = new Misc.SubclassDict();
         List<StackPanel> stackProperties = new List<StackPanel>();
+
+        public ObjectStructure[] selected;
         
         public void loadDatabase(string fileName)
         {
@@ -73,13 +75,35 @@ namespace FlatBase
             int ind = tabMain.SelectedIndex;
             string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
             database.addItem(index, ((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy(loadManifest(n)));
-            //lv.Items.Refresh();
+        }
+
+        private void Entry_Template(object sender, RoutedEventArgs e, ListView lv, int index)
+        {
+            int ind = tabMain.SelectedIndex;
+            string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
+
+            ObjectStructure os = ((ObjectStructure)database.data[index][lv.SelectedIndex]);
+
+            string path = "config/Templates/" + n + "/";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            File.WriteAllText(path + os.Name + ".txt", os.getData());
+
+            objectTemplates.subclasses[n].Add(new Misc.SubclassHelper(os.Name));
         }
 
         private void Entry_Delete(object sender, RoutedEventArgs e, ListView lv, int index)
         {
+            int curIndex = lv.SelectedIndex;
             database.data[index].RemoveAt(lv.SelectedIndex);
-            lv.SelectedIndex = -1;
+            lv.SelectedIndex = curIndex;
+
+            if (selected[tabMain.SelectedIndex] == null)
+                stackProperties[tabMain.SelectedIndex].IsEnabled = false;
         }
 
         private void Entry_Exclude(object sender, RoutedEventArgs e, ListView lv, int index)
@@ -95,11 +119,11 @@ namespace FlatBase
             Console.WriteLine("SC {0}", lvsender.SelectedIndex);
             if (lvsender.SelectedIndex == -1)
             {
-                return;
-                stackProperties[tabMain.SelectedIndex].IsEnabled = false;
+                selected[tabMain.SelectedIndex] = null;
                 return;
             }
 
+            selected[tabMain.SelectedIndex] = ((Misc.HierarchyItemViewer)lvsender.Items[lvsender.SelectedIndex]).refObj;
             buildOSView(stackProperties[tabMain.SelectedIndex], ((Misc.HierarchyItemViewer)lvsender.Items[lvsender.SelectedIndex]).refObj, 0);
         }
 
@@ -130,10 +154,21 @@ namespace FlatBase
 
         public void loadCategories()
         {
+            if (!File.Exists("config/categories.txt"))
+                return;
             string[] s = File.ReadAllLines("config/categories.txt");
+
+            database.data.Clear();
+            tabMain.Items.Clear();
+            scd.subclasses.Clear();
+
+            selected = new ObjectStructure[s.Count()];
 
             for (int i = 0; i < s.Count(); i++)
             {
+                if (s[i].Length <= 0)
+                    continue;
+
                 if (s[i][0] == '#')
                     continue;
 
@@ -229,14 +264,18 @@ namespace FlatBase
                 removeMI.Header = "Remove";
                 MenuItem excludeMI = new MenuItem();
                 excludeMI.Header = "Exclude";
+                MenuItem templateMI = new MenuItem();
+                templateMI.Header = "Template";
 
                 duplicateMI.Click += (rs, EventArgs) => { Entry_Copy(rs, EventArgs, lv, tempI); };
                 removeMI.Click += (rs, EventArgs) => { Entry_Delete(rs, EventArgs, lv, tempI); };
                 excludeMI.Click += (rs, EventArgs) => { Entry_Exclude(rs, EventArgs, lv, tempI); };
+                templateMI.Click += (rs, EventArgs) => { Entry_Template(rs, EventArgs, lv, tempI); };
 
                 cm.Items.Add(duplicateMI);
                 cm.Items.Add(removeMI);
                 cm.Items.Add(excludeMI);
+                cm.Items.Add(templateMI);
                 lv.ContextMenu = cm;
 
 
@@ -247,6 +286,19 @@ namespace FlatBase
                 ContextMenu additionalAddMenu = new ContextMenu();
                 MenuItem miATemp = new MenuItem();
                 miATemp.Header = "From Template";
+
+                objectTemplates.addTable(s[i]);
+
+                Binding OTBinding = new Binding();
+                OTBinding.Converter = new Misc.TemplateMenuConverter(this);
+                OTBinding.Source = objectTemplates;
+
+                OTBinding.Path = new PropertyPath("subclasses[" + s[i] + "]");
+
+                miATemp.SetBinding(MenuItem.ItemsSourceProperty, OTBinding);
+
+
+
 
                 MenuItem miSub = new MenuItem();
                 miSub.Header = "Subclass";
@@ -410,7 +462,7 @@ namespace FlatBase
                 {
                     Misc.FilePathStructure fp = o as Misc.FilePathStructure;
                     FieldSnippets.fsnipSprite sp = new FieldSnippets.fsnipSprite(fp);
-                    
+
 
                     Binding lhs = new Binding();
                     lhs.Path = new PropertyPath("PATH");
@@ -426,6 +478,24 @@ namespace FlatBase
                     sp.Render.SetBinding(Image.SourceProperty, rhs);
 
                     tar.Children.Add(sp);
+                    c++;
+                    continue;
+                }
+
+                if (o is Misc.CodeStructure)
+                {
+                    Misc.CodeStructure fp = o as Misc.CodeStructure;
+                    FieldSnippets.fsnipCode cde = new FieldSnippets.fsnipCode();
+
+
+                    Binding lhs = new Binding();
+                    lhs.Path = new PropertyPath("CODE");
+                    lhs.Source = o;
+                    lhs.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                    cde.codeBox.SetBinding(TextBox.TextProperty, lhs);
+
+                    tar.Children.Add(cde);
                     c++;
                     continue;
                 }
@@ -612,9 +682,16 @@ namespace FlatBase
             }
         }
 
-        public static ObjectStructure loadManifest(string catName, ObjectStructure parent = null, ObjectStructure ovrrd = null)
+        public static ObjectStructure loadManifest(string catName, ObjectStructure parent = null, ObjectStructure ovrrd = null, bool readOverride = false)
         {
-            string[] s = File.ReadAllLines("config/"+catName+".txt");
+            string[] s = new string[1];
+
+            if (!readOverride)
+                s = File.ReadAllLines("config/" + catName + ".txt");
+            else
+                s = catName.Split('\n');
+
+
             ObjectStructure nost = new ObjectStructure();
             if (ovrrd != null)
                 nost = ovrrd;
@@ -622,6 +699,9 @@ namespace FlatBase
             int c = 0;
             for (int i = 0; i < s.Count(); i++)
             {
+                if (s[i].Count() <= 0)
+                    continue;
+
                 if (s[i][0] == '#')
                     continue;
 
@@ -660,6 +740,11 @@ namespace FlatBase
                     nost.FIELDS.Add(0.0f);
                 }
 
+                if (s[i][0] == 'C')
+                {
+                    nost.FIELDS.Add(new Misc.CodeStructure());
+                }
+
                 if (s[i][0] == 'S')
                 {
                     nost.FIELDS.Add(new Misc.FilePathStructure());
@@ -668,6 +753,10 @@ namespace FlatBase
                 if (s[i][0] == 's')
                 {
                     nost.FIELDS.Add("New Entry");
+                    if (s[i][1] == 'N')
+                    {
+                        nost.setOverride(c);
+                    }
                 }
 
                 if (s[i][0] == 'm')
@@ -715,14 +804,9 @@ namespace FlatBase
                     nost.FIELDS.Add(iA);
                 }
 
-                if (s[i][1] == 'N')
-                {
-                    nost.setOverride(c);
-                }
-
                 if (s[i][0] == 'A')
                 {
-                    string eVAL = s[i].Split(' ')[1];
+                    string eVAL = s[i].Remove(0, 1);
 
                     ArrayStructure aStruct = new ArrayStructure(eVAL, nost);
                     nost.FIELDS.Add(aStruct);
@@ -758,7 +842,8 @@ namespace FlatBase
         {
             em.parseAll();
             TagManager.parseAll();
-            loadCategories();   
+            loadCategories();
+            getTemplates();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -782,8 +867,39 @@ namespace FlatBase
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
-            Assistant.SetupWizard sw = new Assistant.SetupWizard();
+            Assistant.SetupWizard sw = new Assistant.SetupWizard(this);
             sw.Show();
+        }
+
+        public void getTemplates()
+        {
+            foreach (string s in Directory.GetDirectories("config/Templates/"))
+            {
+                foreach (string f in Directory.GetFiles(s))
+                {
+                    string entry = f.Split('\\')[1].Replace(".txt", "");
+
+                    string table = s.Split('/').Last();
+
+                    objectTemplates.subclasses[table].Add(new Misc.SubclassHelper(entry));
+                }
+            }
+        }
+
+        public void addFromData(string path)
+        {
+            //File.WriteAllText(path + os.Name + ".txt", os.getData());
+
+            int ind = tabMain.SelectedIndex;
+            string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
+            string compPath = "config/Templates/" + n + "/" + path + ".txt";
+
+            string s = File.ReadAllText(compPath);
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+
+            ObjectStructure os = JsonConvert.DeserializeObject<ObjectStructure>(s);
+
+            database.addItem(ind, ObjectStructure.fromString(s, loadManifest(n)));
         }
 
         public void addFromTemplate(string template)

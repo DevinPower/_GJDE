@@ -1705,3 +1705,7 @@ C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyIte
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\HierarchyItemViewer.baml
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\HierarchyItemViewer.g.cs
 C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\HierarchyItemViewer.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipCode.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\FieldSnippets\fsnipCode.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.dll
+C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\ICSharpCode.AvalonEdit.xml

@@ -1,0 +1,4 @@
+#This file was auto generated on 5/29/2021 12:00:00 AM at 5/29/2021 6:18:11 PM
+s name
+i level
+AR inventory 3

@@ -3,7 +3,7 @@ using System.Collections;
 using LuaFramework;
 using MoonSharp.Interpreter;
 
-public class LUAItem : ItemParent
+public class LUAItem
 {
 	public static ArrayList itemList = new ArrayList();
 

@@ -4,6 +4,7 @@ namespace test
 	{
 		public string name { get; set; }
 		public int level { get; set; }
+		public List<Item> inventory { get; set; }
 	}
 	
 	public class Item

@@ -13,19 +13,56 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.ComponentModel;
+using System.Collections.Specialized;
+
+
 namespace FlatBase.Misc
 {
     /// <summary>
     /// Interaction logic for HierarchyItemViewer.xaml
     /// </summary>
-    public partial class HierarchyItemViewer : UserControl
+    public partial class HierarchyItemViewer : UserControl, INotifyPropertyChanged
     {
-        public ObjectStructure refObj;
-        public HierarchyItemViewer(string n, Brush c, ObjectStructure sr)
+        ObjectStructure os;
+        public ObjectStructure refObj
+        {
+            get
+            {
+                return os;
+            }
+
+            set
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("refObj"));
+                os = value;
+            }
+        }
+
+        SolidColorBrush dBrush;
+
+        public SolidColorBrush colorDisplay
+        {
+            get
+            {
+                return dBrush;
+            }
+
+            set
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("colorDisplay"));
+                dBrush = value;
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public HierarchyItemViewer(SolidColorBrush c, ObjectStructure sr)
         {
             InitializeComponent();
-            labelDisplay.Content = n;
-            labelDisplay.Foreground = c;
+            colorDisplay = c;
+            labelDisplay.Foreground = dBrush;
             refObj = sr;
         }
     }

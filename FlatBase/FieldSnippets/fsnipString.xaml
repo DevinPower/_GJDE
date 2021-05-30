@@ -15,17 +15,15 @@
      FontFamily="{DynamicResource MaterialDesignFont}"
              HorizontalAlignment="Stretch" MinHeight="48">
     <StackPanel HorizontalAlignment="Stretch">
-        
-        <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Name ="textValue" HorizontalAlignment="Stretch" Height="48" Margin="0,0,0,0" VerticalAlignment="Top" AcceptsReturn="True"/>
-        
-        <!-- the following based on https://material.io/guidelines/components/buttons.html#buttons-toggle-buttons -->
-        <ListBox Style="{StaticResource MaterialDesignToolToggleFlatListBox}">
-                <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatItalic}"/>
-                <ListBoxItem Content="{materialDesign:PackIcon Kind=FormatBold}"/>
-                <ListBoxItem Content="{materialDesign:PackIcon Kind=Palette}"/>
-                <ListBoxItem Content="{materialDesign:PackIcon Kind=Film}"/>
-        </ListBox>
 
+        <TextBox ScrollViewer.VerticalScrollBarVisibility="Visible" Name ="textValue" HorizontalAlignment="Stretch" Height="48" Margin="0,0,0,0" VerticalAlignment="Top" AcceptsReturn="True"/>
+
+        <ToolBar>
+            <Button Content="{materialDesign:PackIcon Kind=FormatItalic}" Click="Button_Italic"></Button>
+            <Button Content="{materialDesign:PackIcon Kind=FormatBold}" Click="Button_Bold"></Button>
+            <Button Content="{materialDesign:PackIcon Kind=FormatUnderline}" Click="Button_Underline"></Button>
+        </ToolBar>
+        
         <Label MouseDown="Label_MouseDown" Cursor="SizeNS" Content="{materialDesign:PackIcon Kind=ResizeBottomRight}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
     </StackPanel>

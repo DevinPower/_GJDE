@@ -6,5 +6,6 @@ namespace test2
 		public int level { get; set; }
 		public bool evil { get; set; }
 		public List<Item> loot { get; set; }
+		public float appearanceRate{get;set;}
 	}
 }

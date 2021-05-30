@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:FlatBase.Assistant"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="FlatDB" Height="600" Width="450"
+        Title="FlatDB" Height="600" Width="1020"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
@@ -31,11 +31,15 @@
             <ListView Name="inspector" Width="300"></ListView>
         </StackPanel>
         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
-            
+
             <Button Click="Button_Click">Parse</Button>
             <Button Click="Button_Click_1">Confirm</Button>
-            
+
         </StackPanel>
+
+        <materialDesign:Card Width="560" HorizontalAlignment="Right" Name="preview">
+            <StackPanel Name="previewPanel" IsEnabled="False"></StackPanel>
+        </materialDesign:Card>
     </Grid>
 
 </Window>

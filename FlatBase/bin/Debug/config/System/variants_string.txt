@@ -1,0 +1,4 @@
+s|string
+sN|Name Property
+S|File Path
+C|Code

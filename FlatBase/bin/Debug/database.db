@@ -1,0 +1,89 @@
+{
+  "$type": "FlatBase.GJDB, FlatBase",
+  "tabNames": {
+    "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+    "$values": [
+      "Monster"
+    ]
+  },
+  "data": {
+    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System]], System",
+    "$values": [
+      {
+        "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+        "$values": [
+          {
+            "$type": "FlatBase.ObjectStructure, FlatBase",
+            "weightpools": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[FlatBase.Misc.weightpool, FlatBase]], mscorlib"
+            },
+            "excludeExport": true,
+            "Name": "Bat",
+            "fieldexportnames": {
+              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+              "$values": [
+                "name",
+                "level",
+                "evil",
+                "loot",
+                "appearanceRate"
+              ]
+            },
+            "FIELDS": {
+              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+              "$values": [
+                "Bat",
+                7,
+                false,
+                {
+                  "$type": "FlatBase.ArrayStructure, FlatBase",
+                  "pureName": "R loot 1",
+                  "REFS": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+                    "$values": []
+                  }
+                },
+                1.0
+              ]
+            }
+          },
+          {
+            "$type": "FlatBase.ObjectStructure, FlatBase",
+            "weightpools": {
+              "$type": "System.Collections.Generic.Dictionary`2[[System.String, mscorlib],[FlatBase.Misc.weightpool, FlatBase]], mscorlib"
+            },
+            "excludeExport": false,
+            "Name": "Supreme Bat",
+            "fieldexportnames": {
+              "$type": "System.Collections.Generic.List`1[[System.String, mscorlib]], mscorlib",
+              "$values": [
+                "name",
+                "level",
+                "evil",
+                "loot",
+                "appearanceRate"
+              ]
+            },
+            "FIELDS": {
+              "$type": "System.Collections.ObjectModel.ObservableCollection`1[[System.Object, mscorlib]], System",
+              "$values": [
+                "Supreme Bat",
+                70,
+                true,
+                {
+                  "$type": "FlatBase.ArrayStructure, FlatBase",
+                  "pureName": "R loot 1",
+                  "REFS": {
+                    "$type": "System.Collections.ObjectModel.ObservableCollection`1[[FlatBase.ObjectStructure, FlatBase]], System",
+                    "$values": []
+                  }
+                },
+                10.0
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

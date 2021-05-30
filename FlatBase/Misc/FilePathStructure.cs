@@ -9,6 +9,32 @@ using System.Collections.ObjectModel;
 
 namespace FlatBase.Misc
 {
+    public class CodeStructure : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        string code { get; set; }
+        public string CODE
+        {
+            get
+            {
+                return code;
+            }
+            set
+            {
+                code = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("CODE"));
+
+            }
+        }
+
+
+        public CodeStructure()
+        {
+            code = "--new comment";
+        }
+    }
+
     public class FilePathStructure : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
