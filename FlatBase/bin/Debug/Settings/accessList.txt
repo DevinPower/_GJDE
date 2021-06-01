@@ -1,0 +1,4 @@
+C:\Users\devin\Desktop\ExampleDB\Test1\test.gjde
+C:\Users\devin\Desktop\ExampleDB\Test2\gamedb.gjde
+C:\Users\devin\Desktop\ExampleDB\EnemiesTest\enemiesDB.gjde
+C:\Users\devin\Desktop\ExampleDB\ArrayTest\array.gjde

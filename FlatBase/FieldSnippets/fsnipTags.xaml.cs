@@ -26,7 +26,7 @@ namespace FlatBase.FieldSnippets
         public event PropertyChangedEventHandler PropertyChanged;
         public TagField refTags;
 
-        public fsnipTags(List<UserTag> options, TagField tf)
+        public fsnipTags(ObservableCollection<UserTag> options, TagField tf)
         {
             InitializeComponent();
             refTags = tf;

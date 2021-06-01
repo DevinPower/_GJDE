@@ -33,8 +33,17 @@ namespace FlatBase
         public Misc.SubclassDict scd = new Misc.SubclassDict();
         List<StackPanel> stackProperties = new List<StackPanel>();
 
+        public static List<Window> controlledWindows = new List<Window>();
+
         public ObjectStructure[] selected;
+
+        public static List<Misc.PluginManager> plugins = new List<Misc.PluginManager>();
         
+        public void newDB()
+        {
+            database = new GJDB();
+        }
+
         public void loadDatabase(string fileName)
         {
             string file = File.ReadAllText(fileName);
@@ -67,9 +76,27 @@ namespace FlatBase
 
         public MainWindow()
         {
-            database = new GJDB();
-            Misc.SplashScreen ss = new Misc.SplashScreen();
-            ss.Show();
+            loadPlugins();
+            string[] args = Environment.GetCommandLineArgs();
+            
+            if (args.Count() == 1)
+            {
+                Misc.SplashScreen ss = new Misc.SplashScreen(this);
+                ss.Show();
+
+                controlledWindows.Add(ss);
+            }
+            else
+            {
+                database = new GJDB();
+            }
+        }
+
+        public void loadPlugins()
+        {
+            Misc.PluginManager pm = new Misc.PluginManager(@"C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\Plugins\DefaultPlugins.dll");
+
+            plugins.Add(pm);
         }
 
         private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
@@ -115,7 +142,6 @@ namespace FlatBase
 
         private void SelectionChange(object sender, RoutedEventArgs e)
         {
-            //TODO: FIX  
             ListView lvsender = (ListView)sender;
             stackProperties[tabMain.SelectedIndex].IsEnabled = true;
             Console.WriteLine("SC {0}", lvsender.SelectedIndex);
@@ -842,6 +868,11 @@ namespace FlatBase
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            loadData();
+        }
+
+        public void loadData()
+        {
             em.parseAll();
             TagManager.parseAll();
             loadCategories();
@@ -864,10 +895,10 @@ namespace FlatBase
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            File.WriteAllText("export.db", database.export());
+            File.WriteAllText("export.db", database.export(plugins[0]));
         }
 
-        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        private void MenuItem_Classes(object sender, RoutedEventArgs e)
         {
             Assistant.SetupWizard sw = new Assistant.SetupWizard(this);
             sw.Show();
@@ -875,6 +906,8 @@ namespace FlatBase
 
         public void getTemplates()
         {
+            if (!Directory.Exists("config/Templates"))
+                return;
             foreach (string s in Directory.GetDirectories("config/Templates/"))
             {
                 foreach (string f in Directory.GetFiles(s))
@@ -910,6 +943,23 @@ namespace FlatBase
             int ind = tabMain.SelectedIndex;
 
             database.data[ind].Add(loadManifest(template));
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            foreach(Window w in controlledWindows)
+            {
+                if (w != null)
+                    w.Close();
+            }
+        }
+
+        private void MenuItem_Labels(object sender, RoutedEventArgs e)
+        {
+            Assistant.TagWizard tw = new Assistant.TagWizard(TagManager.tags);
+            
+            controlledWindows.Add(tw);
+            tw.Show();
         }
     }
 }

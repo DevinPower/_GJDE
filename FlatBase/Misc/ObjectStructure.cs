@@ -111,7 +111,8 @@ namespace FlatBase
             set
             {
                 refVal = value;
-                PropertyChanged(this, new PropertyChangedEventArgs("REF"));
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("REF"));
             }
         }
     }
@@ -164,6 +165,7 @@ namespace FlatBase
     [Serializable]
     public class ObjectStructure : INotifyPropertyChanged
     {
+        public static uint idCount = 0;
         public Dictionary<string, Misc.weightpool> weightpools = new Dictionary<string, Misc.weightpool>();
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -330,40 +332,6 @@ namespace FlatBase
             }
 
             return pureObject;
-        }
-
-        public string save()
-        {
-            string json = "{";
-            int c = 0;
-            foreach (object o in fields)
-            {
-                if (o is ObjectHeader)
-                {
-                    c++;
-                    continue;
-                }
-
-                json += "\"" + fieldexportnames[c] + "\":";
-
-                if (!(o is int))
-                    json += "\"";
-
-                json += o.ToString();
-                if (!(o is int))
-                    json += "\"";
-
-                c++;
-
-                if (c < fields.Count)
-                    json += ",";
-            }
-
-            json += "}";
-
-            Console.WriteLine(c.ToString() + " fields exported");
-
-            return json;
         }
     }
 }

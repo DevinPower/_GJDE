@@ -1,9 +1,0 @@
-#this is the object manifest
-#sharps designate a comment
-#DATA TYPES:
-#b	bool	i>	int
-#f>	float	s	string
-#h	header	G
-h Hero
-sN name
-G HealthCurve

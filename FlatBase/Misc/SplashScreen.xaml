@@ -4,21 +4,52 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlatBase.Misc"
+        xmlns:SplashScreenMisc="clr-namespace:FlatBase.Misc.SplashScreenMisc"
         mc:Ignorable="d"
-        Title="SplashScreen" Height="450" Width="800" WindowStyle="None" Background="#FF3F3E3E" Topmost="True" WindowStartupLocation="CenterOwner">
+        Title="SplashScreen" Height="450" Width="800" WindowStyle="None" Topmost="True" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Window.Background>
+        <ImageBrush ImageSource="splashBG.png"/>
+    </Window.Background>
     <Grid>
-        <Label Content="__GJDE" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="84" Width="644" Foreground="#DDA5BDC0" FontSize="48"/>
-        <Border BorderBrush="Black" BorderThickness="0,0,1,0" HorizontalAlignment="Left" Height="278" Margin="63,141,0,0" VerticalAlignment="Top" Width="272"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400*"/>
+            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="241*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="__GJDE" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="84" Width="644" Foreground="#DDA5BDC0" FontSize="48" Grid.ColumnSpan="3"/>
+        <Border BorderBrush="Black" BorderThickness="0,0,2,0" HorizontalAlignment="Left" Height="278" Margin="29,141,0,0" VerticalAlignment="Top" Width="372" Background="#72000000">
+            <StackPanel CanVerticallyScroll="True">
+                <ScrollViewer HorizontalAlignment="Stretch" MinWidth="100px" MaxHeight="278">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <!--<Expander Header="Pinned" VerticalAlignment="Stretch" Background="#00F02B2B" Foreground="#FFD3C9C9" ExpandDirection="Down" HorizontalContentAlignment="Stretch" IsExpanded="True" >
+                            <Expander.Content>
+                                <StackPanel Name="pinned">
+
+                                </StackPanel>
+                            </Expander.Content>
+                        </Expander>-->
+
+                        <Expander Header="Recent" VerticalAlignment="Stretch" Background="#00F02B2B" Foreground="#FFD3C9C9" ExpandDirection="Down" HorizontalContentAlignment="Stretch" IsExpanded="True">
+                            <Expander.Content>
+                                <StackPanel Name="projectList">
+
+                                </StackPanel>
+                            </Expander.Content>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
         <Label Content="Open Recent" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Height="42" Width="261" Foreground="#DDA5BDC0" FontSize="24"/>
-        <Label Content="Get Started" HorizontalAlignment="Left" Margin="529,94,0,0" VerticalAlignment="Top" Height="42" Width="130" Foreground="#DDA5BDC0" FontSize="24"/>
-        <StackPanel HorizontalAlignment="Left" Height="292" Margin="529,141,0,0" VerticalAlignment="Top" Width="232">
+        <Label Content="Get Started" HorizontalAlignment="Left" Margin="129,94,0,0" VerticalAlignment="Top" Height="42" Width="130" Foreground="#DDA5BDC0" FontSize="24" Grid.ColumnSpan="2" Grid.Column="1"/>
+        <StackPanel HorizontalAlignment="Left" Height="292" Margin="129,141,0,0" VerticalAlignment="Top" Width="232" Grid.ColumnSpan="2" Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Margin" Value="0,10,0,0"/>
                 </Style>
             </StackPanel.Resources>
-            
-            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3" Click="Button_New">
                 <Grid Width="232" Height="64">
                     <Label Margin="32, 0, 0, 0" Content="New Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
@@ -27,7 +58,7 @@
                 </Grid>
             </Button>
 
-            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3" Click="Button_Open">
                 <Grid Width="232" Height="64">
                     <Label Margin="32, 0, 0, 0" Content="Open Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
@@ -36,7 +67,7 @@
                 </Grid>
             </Button>
 
-            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3">
+            <Button MinHeight="48" Background="#FF4F4F4F" Height="64" BorderBrush="#002196F3" IsEnabled="False">
                 <Grid Width="232" Height="64">
                     <Label Margin="32, 0, 0, 0" Content="Linked Project" Foreground="#DDA5BDC0" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
                     <Label Margin="32, 20, 0, 0" Foreground="#DDA5BDC0" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Height="48" Width="200">
@@ -45,11 +76,11 @@
                 </Grid>
             </Button>
 
-            <Label Foreground="#DD6067E7" HorizontalAlignment="Center">Visit the project on Github</Label>
+            <Label Foreground="#DD6067E7" HorizontalAlignment="Center" Cursor="Hand">Visit the project on Github</Label>
 
 
         </StackPanel>
-        <Image HorizontalAlignment="Left" Height="96" Margin="725,-37,-27.4,0" VerticalAlignment="Top" Width="96" Source="logoGreeble.png" RenderTransformOrigin="1.041,0.124"/>
+        <Image HorizontalAlignment="Left" Height="96" Margin="174,-37,-29,0" VerticalAlignment="Top" Width="96" Source="logoGreeble.png" RenderTransformOrigin="1.041,0.124" Grid.Column="2"/>
 
     </Grid>
 </Window>

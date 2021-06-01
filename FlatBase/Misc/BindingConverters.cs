@@ -36,6 +36,35 @@ namespace FlatBase.Misc
         }
     }
 
+    class TagManagerConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            ObservableCollection<UserTag> tagslist = ((Dictionary<string, ObservableCollection<UserTag>>)value)["Global"];
+
+            if (tagslist == null)
+                return null;
+
+            List<object> toret = new List<object>();
+
+            foreach(UserTag t in tagslist)
+            {
+                Assistant.tagDisplay disp = new Assistant.tagDisplay(t);
+
+                toret.Add(disp);
+            }
+
+            Console.WriteLine("updating tags count= " + toret.Count);
+
+            return toret;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     class AStructConverter : IValueConverter
     {
         MainWindow refmw;
@@ -43,6 +72,7 @@ namespace FlatBase.Misc
         public AStructConverter(MainWindow mw)
         {
             refmw = mw;
+            
         }
 
         public object Convert(object values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -153,6 +183,8 @@ namespace FlatBase.Misc
             throw new NotImplementedException();
         }
     }
+
+
 
     class ExclusionConverter : IValueConverter
     {
@@ -383,11 +415,14 @@ namespace FlatBase.Misc
                 MaterialDesignThemes.Wpf.Chip chip = new MaterialDesignThemes.Wpf.Chip();
                 chip.Height = 24;
                 chip.IsDeletable = true;
-                chip.Content = collection[i];
+                chip.Content = collection[i];                
 
                 Brush brush = chip.Background;
                 if (TagManager.isTag("Global", collection[i]))
+                {
                     brush = new SolidColorBrush(TagManager.tagColor("Global", collection[i]));
+                }
+
                 chip.Background = brush;
                 chip.DeleteClick += delete;
 

@@ -76,37 +76,9 @@ namespace FlatBase
 
         public ObservableCollection<ObservableCollection<ObjectStructure>> data { get; set; }
 
-        public string export()
+        public string export(Misc.PluginManager exporter)
         {
-            string json = "{\n";
-            int i = 0;
-
-            foreach(ObservableCollection<ObjectStructure> collection in data)
-            {
-                json += "\"" + tabNames[i] + "\" : [\n";
-
-                int c = 0;
-                foreach(ObjectStructure os in collection)
-                {
-                    json += os.save();
-                    c++;
-
-                    if (c < collection.Count)
-                        json += ",";
-                }
-
-
-                json += "]";
-
-                i++;
-                if (i < tabNames.Count)
-                    json += ",";
-               
-            }
-
-            json += "}";
-
-            return json;
+            return exporter.run(this);
         }
 
 

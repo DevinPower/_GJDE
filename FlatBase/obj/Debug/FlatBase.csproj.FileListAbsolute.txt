@@ -1715,3 +1715,11 @@ C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FieldSnippets\fsn
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\FieldSnippets\fsnipCode.baml
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\SplashScreen.g.cs
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Misc\SplashScreen.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\SplashScreen.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\SplashScreen.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\SplashScreenMisc\ProjectDisplay.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Misc\SplashScreenMisc\ProjectDisplay.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\tagDisplay.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\TagWizard.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\tagDisplay.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\TagWizard.baml

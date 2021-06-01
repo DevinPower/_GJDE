@@ -65,10 +65,13 @@ namespace FlatBase
 
         public void parseAll()
         {
-            string[] s = File.ReadAllLines("config/enumsManifest.txt");
-            for (int i = 0; i < s.Count(); i++)
+            if (File.Exists("config/enumsManifest.txt"))
             {
-                loadEnum(s[i]);
+                string[] s = File.ReadAllLines("config/enumsManifest.txt");
+                for (int i = 0; i < s.Count(); i++)
+                {
+                    loadEnum(s[i]);
+                }
             }
         }
     }

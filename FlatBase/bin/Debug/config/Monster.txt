@@ -1,6 +1,0 @@
-#This file was auto generated on 5/29/2021 12:00:00 AM at 5/29/2021 6:20:55 PM
-sN name
-i level
-b evil
-AR loot 1
-f appearanceRate
