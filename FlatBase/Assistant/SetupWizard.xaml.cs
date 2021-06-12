@@ -23,14 +23,17 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 
+using Newtonsoft.Json;
+
 using Microsoft.Win32;
 
 namespace FlatBase.Assistant
 {
+    [Serializable]
     public class variantWrapper
     {
-        public string display;
-        public string markdown;
+        public string display  {get;set;}
+        public string markdown { get; set; }
 
         public variantWrapper(string m, string d)
         {
@@ -39,6 +42,7 @@ namespace FlatBase.Assistant
         }
     }
 
+    [Serializable]
     public class fieldHelper : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -181,6 +185,7 @@ namespace FlatBase.Assistant
         }
     }
 
+    [Serializable]
     public class ConvertedClass : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -193,6 +198,7 @@ namespace FlatBase.Assistant
 
         public string name { get; set; }
         public ObservableCollection<fieldHelper> fields { get; set; }
+        public string linkedFilePath { get; set; }
 
         public ObservableCollection<string> dependencies = new ObservableCollection<string>();
 
@@ -259,6 +265,13 @@ namespace FlatBase.Assistant
             if (dependencies.Count == 0)
                 return true;
             return false;
+        }
+
+        public ConvertedClass(string n, List<fieldHelper> fhs)
+        {
+            name = n;
+            foreach (fieldHelper fh in fhs)
+                fields.Add(fh);
         }
     }
 
@@ -327,7 +340,23 @@ namespace FlatBase.Assistant
             cm.Items.Add(removeMI);
             loadedScripts.ContextMenu = cm;
 
-            loadVariants();
+            if (variants.Count == 0)
+                loadVariants();
+
+            if (File.Exists("config/classinspections.txt"))
+            {
+                Console.WriteLine("LOADING");
+                string stored = File.ReadAllText("config/classinspections.txt");
+                var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                ObservableCollection<ConvertedClass> sv = 
+                    JsonConvert.DeserializeObject< ObservableCollection<ConvertedClass>>(stored, deserializeSettings);
+
+                foreach(ConvertedClass cc in sv)
+                {
+                    inspectedClasses.Add(cc);
+                    loadedScripts.Items.Add(cc.name);
+                }
+            }
         }
 
         public string[] loadFile()
@@ -343,7 +372,7 @@ namespace FlatBase.Assistant
                 int i = 0;
                 foreach (string s in openFileDialog.FileNames)
                 {
-                    ret[i] = File.ReadAllText(s);
+                    ret[i] = s;
                     i++;
                 }
 
@@ -386,8 +415,9 @@ namespace FlatBase.Assistant
             if (code == null)
                 return;
 
-            foreach (string s in code)
+            foreach (string p in code)
             {
+                string s = File.ReadAllText(p);
                 Console.Write("AAA");
                 loadedScripts.ItemsSource = loadedClasses;
 
@@ -437,6 +467,12 @@ namespace FlatBase.Assistant
                         cc.fields.Add(new fieldHelper(identifierNames[i], tS, l));
                     }
 
+                    cc.linkedFilePath = p;
+                    System.Security.Cryptography.MD5 hsh = System.Security.Cryptography.MD5.Create();
+                    hsh.ComputeHash(Encoding.ASCII.GetBytes(p));
+
+                    Console.Write(BitConverter.ToString(hsh.Hash));
+
                     inspectedClasses.Add(cc);
                 }
             }
@@ -483,6 +519,10 @@ namespace FlatBase.Assistant
             }
 
             File.WriteAllText("config/categories.txt", plainTextCategories);
+
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            string sv = JsonConvert.SerializeObject(inspectedClasses, deserializeSettings);
+            File.WriteAllText("config/classinspections.txt", sv);
 
             _mw.loadCategories();
             this.Close();

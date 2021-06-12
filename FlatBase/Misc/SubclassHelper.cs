@@ -42,8 +42,11 @@ namespace FlatBase.Misc
 
         public void addTable(string s)
         {
-            subclasses.Add(s, new ObservableCollection<SubclassHelper>());
-            subclasses[s].CollectionChanged += ContentCollectionChanged;
+            if (!subclasses.ContainsKey(s))
+            {
+                subclasses.Add(s, new ObservableCollection<SubclassHelper>());
+                subclasses[s].CollectionChanged += ContentCollectionChanged;
+            }
         }
 
         public void ContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

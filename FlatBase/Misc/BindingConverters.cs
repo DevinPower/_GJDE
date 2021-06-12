@@ -524,7 +524,10 @@ namespace FlatBase.Misc
                         sList.Add(vwd.display);
                 }
 
-                toret.Add(new Assistant.fieldDisplay(os, sList));
+                Assistant.fieldDisplay fd = new Assistant.fieldDisplay(os, sList);
+                fd.MouseEnter += new MouseEventHandler((object sender, MouseEventArgs e) => { Console.WriteLine("mouse enter " + fd.Name); });
+                toret.Add(fd);
+                
             }
 
             return toret;//collection[idx.Value].Name;

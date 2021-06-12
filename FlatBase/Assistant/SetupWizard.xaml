@@ -19,7 +19,7 @@
     <Grid>
         <StackPanel Orientation="Horizontal">
             <materialDesign:Card>
-                <ListView Name="loadedScripts" Width="150" SelectionChanged="LoadedScripts_SelectionChanged" Margin="0,0,0,35">
+                <ListView Name="loadedScripts" Width="150" SelectionChanged="LoadedScripts_SelectionChanged" AllowDrop="True" Margin="0,0,0,35">
                     <!--<ListViewItem>
                         <Grid>
                             <TextBlock Width="100">Demo</TextBlock>
@@ -28,7 +28,8 @@
                     </ListViewItem>-->
                 </ListView>
             </materialDesign:Card>
-            <ListView Name="inspector" Width="300"></ListView>
+            <ListView Name="inspector" Width="300">
+            </ListView>
         </StackPanel>
         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
 

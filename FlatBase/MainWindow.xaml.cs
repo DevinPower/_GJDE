@@ -99,11 +99,19 @@ namespace FlatBase
             plugins.Add(pm);
         }
 
-        private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
+        private void Entry_Duplicate(object sender, RoutedEventArgs e, ListView lv, int index)
         {
             int ind = tabMain.SelectedIndex;
             string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
             database.addItem(index, ((ObjectStructure)database.data[index][lv.SelectedIndex]).Copy(loadManifest(n)));
+        }
+
+        private void Entry_Copy(object sender, RoutedEventArgs e, ListView lv, int index)
+        {
+            int ind = tabMain.SelectedIndex;
+            string n = ((TabItem)tabMain.Items[ind]).Header.ToString();
+
+            Clipboard.SetText(((ObjectStructure)database.data[index][lv.SelectedIndex]).getData());
         }
 
         private void Entry_Template(object sender, RoutedEventArgs e, ListView lv, int index)
@@ -294,16 +302,20 @@ namespace FlatBase
                 excludeMI.Header = "Exclude";
                 MenuItem templateMI = new MenuItem();
                 templateMI.Header = "Template";
+                MenuItem copyMI = new MenuItem();
+                copyMI.Header = "Copy";
 
-                duplicateMI.Click += (rs, EventArgs) => { Entry_Copy(rs, EventArgs, lv, tempI); };
+                duplicateMI.Click += (rs, EventArgs) => { Entry_Duplicate(rs, EventArgs, lv, tempI); };
                 removeMI.Click += (rs, EventArgs) => { Entry_Delete(rs, EventArgs, lv, tempI); };
                 excludeMI.Click += (rs, EventArgs) => { Entry_Exclude(rs, EventArgs, lv, tempI); };
                 templateMI.Click += (rs, EventArgs) => { Entry_Template(rs, EventArgs, lv, tempI); };
+                copyMI.Click += (rs, EventArgs) => { Entry_Copy(rs, EventArgs, lv, tempI); };
 
                 cm.Items.Add(duplicateMI);
                 cm.Items.Add(removeMI);
                 cm.Items.Add(excludeMI);
                 cm.Items.Add(templateMI);
+                cm.Items.Add(copyMI);
                 lv.ContextMenu = cm;
 
 

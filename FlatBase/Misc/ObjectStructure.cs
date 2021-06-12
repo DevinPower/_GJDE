@@ -279,7 +279,7 @@ namespace FlatBase
 
         public string getData()
         {
-            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, Formatting = Formatting.Indented };
 
             return JsonConvert.SerializeObject(this, deserializeSettings);
         }
