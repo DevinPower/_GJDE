@@ -620,7 +620,9 @@ namespace FlatBase.Assistant
         {
             Binding items = new Binding();
             items.Source = inspectedClasses[loadedScripts.SelectedIndex];
-            items.Converter = new FlatBase.Misc.WizardHierarchyConverter();
+            Misc.WizardHierarchyConverter whc = new FlatBase.Misc.WizardHierarchyConverter();
+            whc.setCC(inspectedClasses[loadedScripts.SelectedIndex]);
+            items.Converter = whc;
             items.Path = new PropertyPath("fields");
             items.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             

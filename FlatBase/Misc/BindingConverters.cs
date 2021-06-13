@@ -471,6 +471,12 @@ namespace FlatBase.Misc
 
     class WizardHierarchyConverter : IValueConverter
     {
+        Assistant.ConvertedClass lcc;
+        public void setCC(Assistant.ConvertedClass rf)
+        {
+            lcc = rf;
+        }
+
         public object Convert(object values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (values == null)
@@ -483,7 +489,7 @@ namespace FlatBase.Misc
 
             List<object> toret = new List<object>();
             
-            foreach(string cc in (values as Assistant.ConvertedClass).dependencies)
+            foreach(string cc in lcc.dependencies)
             {
                 foreach(Assistant.ConvertedClass vw in Assistant.SetupWizard.inspectedClasses)
                 {
