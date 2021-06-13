@@ -158,6 +158,8 @@ namespace FlatBase.Misc
 
                 foreach(string file in files)
                 {
+                    if (!File.Exists(file))
+                        continue;
                     string data = File.ReadAllText(file);
                     projectFile project = JsonConvert.DeserializeObject<projectFile>(data);
                     project.file = file;

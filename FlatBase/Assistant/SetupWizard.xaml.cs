@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,7 +47,6 @@ namespace FlatBase.Assistant
     public class fieldHelper : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public bool list { get; set; }
 
         readonly string[] generics = { "int", "string", "bool", "float", "double" };
 
@@ -54,6 +54,7 @@ namespace FlatBase.Assistant
         string _name;
         string _type;
         string _variant;
+        public bool list { get; set; }
 
         public string Name
         {
@@ -108,7 +109,6 @@ namespace FlatBase.Assistant
                 }
             }
         }
-
 
         public fieldHelper(string n, string t, bool l)
         {
@@ -189,16 +189,84 @@ namespace FlatBase.Assistant
     public class ConvertedClass : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public string name { get; set; }
+        ObservableCollection<fieldHelper> _fields;
+        public ObservableCollection<fieldHelper> fields
+        {
+            get
+            {
+                return _fields;
+            }
+
+            set
+            {
+                _fields = value;
+                if (PropertyChanged != null)
+                {
+                    Console.WriteLine("FIELD UPDATE");
+                    PropertyChanged(this, new PropertyChangedEventArgs("fields"));
+                }
+            }
+        }
+        public string linkedFilePath { get; set; }
+
 
         public ConvertedClass()
         {
             fields = new ObservableCollection<fieldHelper>();
-            fields.CollectionChanged += ContentCollectionChanged; 
+            fields.CollectionChanged += ContentCollectionChanged;
         }
 
-        public string name { get; set; }
-        public ObservableCollection<fieldHelper> fields { get; set; }
-        public string linkedFilePath { get; set; }
+        public ConvertedClass(string n, List<fieldHelper> fhs)
+        {
+            name = n;
+            foreach (fieldHelper fh in fhs)
+                fields.Add(fh);
+
+            fields.CollectionChanged += ContentCollectionChanged;
+            registerWatcher();
+        }
+
+        public void registerWatcher()
+        {
+            if (linkedFilePath != null)
+                SetupWizard.registerFileWatch(linkedFilePath, this);
+        }
+
+        public void diff(ConvertedClass target)
+        {
+            Dictionary<string, fieldHelper> myPairs = fields.ToDictionary(x => x.Name, x => x);
+            Dictionary<string, fieldHelper> targetPairs = target.fields.ToDictionary(x => x.Name, x => x);
+
+            for(int i = 0; i < fields.Count; i++)
+            {
+                fieldHelper fh = fields[i];
+                if (targetPairs.ContainsKey(fh.Name))
+                {
+                    //Console.WriteLine("paired {0}", fh.Name);
+                }
+                else
+                {
+                    //Console.WriteLine("{0} not found", fh.Name);
+                    fields.Remove(fh);
+                    i--;
+                }
+            }
+
+            foreach (fieldHelper fh in target.fields)
+            {
+                if (!myPairs.ContainsKey(fh.Name))
+                {
+                    //Console.WriteLine("NEW {0}", fh.Name);
+                    fields.Add(fh);
+                }
+            }
+
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("fields"));
+            }
+        }
 
         public ObservableCollection<string> dependencies = new ObservableCollection<string>();
 
@@ -266,12 +334,17 @@ namespace FlatBase.Assistant
                 return true;
             return false;
         }
+    }
 
-        public ConvertedClass(string n, List<fieldHelper> fhs)
+    public class ccFileWrapper
+    {
+        public ConvertedClass linkedCC;
+        public FileSystemWatcher linkedFSW;
+
+        public ccFileWrapper(ConvertedClass cc, FileSystemWatcher fsw)
         {
-            name = n;
-            foreach (fieldHelper fh in fhs)
-                fields.Add(fh);
+            linkedCC = cc;
+            linkedFSW = fsw;
         }
     }
 
@@ -280,12 +353,62 @@ namespace FlatBase.Assistant
     /// </summary>
     public partial class SetupWizard : Window
     {
+        public static SetupWizard setupSingleton;
         public static Dictionary<string, List<variantWrapper>> variants = new Dictionary<string, List<variantWrapper>>();
 
         public static ObservableCollection<string> loadedClasses = new ObservableCollection<string>();
         public static ObservableCollection<ConvertedClass> inspectedClasses { get; set; }
 
         ConvertedClass curClass;
+        public static Dictionary<string, ccFileWrapper> fileWatchers = new Dictionary<string, ccFileWrapper>();
+
+        public static void registerFileWatch(string filePath, ConvertedClass cc)
+        {
+            if (filePath == null || fileWatchers.ContainsKey(filePath))
+                return;
+
+            Console.WriteLine("registering " + filePath);
+
+            FileSystemWatcher fsw = new FileSystemWatcher();
+
+            fsw.Path = System.IO.Path.GetDirectoryName(filePath);
+            fsw.Filter = System.IO.Path.GetFileName(filePath);
+
+            fsw.EnableRaisingEvents = true;
+
+            fileWatchers.Add(filePath, new ccFileWrapper(cc, fsw));
+            //        this.textboxlink.Dispatcher.Invoke(DispatcherPriority.Normal,
+            // new Action(() => { textBoxValue = this.textboxlink.Text; }));
+
+            
+
+            fsw.Changed += (object sender, FileSystemEventArgs e) => { 
+                setupSingleton.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() => { SetupWizard.reload(cc, filePath); })); 
+            };
+        }
+
+        public static void reload(ConvertedClass target, string fp)
+        {
+            int uniqueFN = -1;
+            Random r = new Random();
+            while (File.Exists("Temp/" + uniqueFN.ToString()) || uniqueFN == -1)
+            {
+                uniqueFN = r.Next(0, 255635).GetHashCode();
+            }
+
+            string path = "Temp/" + uniqueFN.ToString();
+            File.Copy(fp, path);
+            List<ConvertedClass> freshRead = readClass(path);
+            Console.WriteLine("RELOADING");
+            
+            foreach(ConvertedClass fcc in freshRead)
+            {
+                //TODO: Catch class being removed
+                //Console.WriteLine("reread {0}", fcc.name);
+                if (fcc.name == target.name)
+                    target.diff(fcc);
+            }
+        }
 
         public void deleteClass(object sender, RoutedEventArgs e)
         {
@@ -303,8 +426,8 @@ namespace FlatBase.Assistant
 
         public void buildView()
         {
-            try
-            {
+            //try
+            //{
                 List<string> catText = new List<string>();
                 foreach (ConvertedClass cc in inspectedClasses)
                 {
@@ -314,14 +437,17 @@ namespace FlatBase.Assistant
                     }
                 }
 
-                string curText = curClass.toDocument(catText);
+                string curText = curClass.toDocument(catText).Trim();
+                Console.WriteLine("------");
                 Console.WriteLine(curText);
+                Console.WriteLine("------");
                 _mw.buildOSView(previewPanel, MainWindow.loadManifest(curText, null, null, true), 0);
-            }
-            catch
-            {
-                Console.WriteLine("RENDER ERROR");
-            }
+                Console.WriteLine("APT");
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("RENDER ERROR");
+            //}
         }
 
         public SetupWizard(MainWindow mw)
@@ -345,18 +471,23 @@ namespace FlatBase.Assistant
 
             if (File.Exists("config/classinspections.txt"))
             {
-                Console.WriteLine("LOADING");
                 string stored = File.ReadAllText("config/classinspections.txt");
                 var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
                 ObservableCollection<ConvertedClass> sv = 
                     JsonConvert.DeserializeObject< ObservableCollection<ConvertedClass>>(stored, deserializeSettings);
 
                 foreach(ConvertedClass cc in sv)
-                {
+                { 
+                    cc.PropertyChanged += rebuildView;
                     inspectedClasses.Add(cc);
+                    
                     loadedScripts.Items.Add(cc.name);
+                    cc.registerWatcher();
                 }
             }
+
+            //loadedScripts.ItemsSource = loadedClasses;
+            setupSingleton = this;
         }
 
         public string[] loadFile()
@@ -417,73 +548,82 @@ namespace FlatBase.Assistant
 
             foreach (string p in code)
             {
-                string s = File.ReadAllText(p);
-                Console.Write("AAA");
-                loadedScripts.ItemsSource = loadedClasses;
-
-                var syntaxTree = CSharpSyntaxTree.ParseText(s);
-
-                var classes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
-
-                foreach (ClassDeclarationSyntax c in classes)
+                foreach (ConvertedClass tA in readClass(p))
                 {
-                    string[] identifierNames = c.DescendantNodes()
-                    .OfType<PropertyDeclarationSyntax>().Select(v => v.Identifier.Text)
-                    .ToArray();
-
-                    object[] identifierTypes = c.DescendantNodes()
-                    .OfType<PropertyDeclarationSyntax>().Select(v => v.Type)
-                    .ToArray();
-                    //Console.WriteLine(c.BaseList.ToString());
-                    loadedClasses.Add(c.Identifier.ToString());
-
-                    ConvertedClass cc = new ConvertedClass();
-                    cc.PropertyChanged += rebuildView;
-
-                    if (c.BaseList != null)
-                    {
-                        string clean = c.BaseList.ToString();
-                        clean = clean.Replace(" ", "");
-                        clean = clean.Replace(":", "");
-                        Console.WriteLine("adding " + clean);
-                        cc.dependencies.Add(clean);
-                    }
-                    cc.name = c.Identifier.ToString();
-                    
-
-                    for (int i = 0; i < identifierNames.Count(); i++)
-                    {
-                        string tS = "";
-                        tS = identifierTypes[i].ToString();
-                        TypeSyntax t = identifierTypes[i] as TypeSyntax;
-                        bool l = false;
-                        if (t.GetFirstToken().ToString() == "List")
-                        {
-                            tS = t.GetFirstToken().GetNextToken().GetNextToken().ToString();
-                            l = true;
-                            Console.WriteLine("DEFINITELY A LIST");
-                        }
-
-                        cc.fields.Add(new fieldHelper(identifierNames[i], tS, l));
-                    }
-
-                    cc.linkedFilePath = p;
-                    System.Security.Cryptography.MD5 hsh = System.Security.Cryptography.MD5.Create();
-                    hsh.ComputeHash(Encoding.ASCII.GetBytes(p));
-
-                    Console.Write(BitConverter.ToString(hsh.Hash));
-
-                    inspectedClasses.Add(cc);
+                    tA.PropertyChanged += rebuildView;
+                    inspectedClasses.Add(tA);
                 }
             }
+        }
+
+        public static List<ConvertedClass> readClass(string p)
+        { 
+            string s = File.ReadAllText(p);
+
+            List<ConvertedClass> toReturn = new List<ConvertedClass>();
+            var syntaxTree = CSharpSyntaxTree.ParseText(s);
+
+            var classes = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
+
+            foreach (ClassDeclarationSyntax c in classes)
+            {
+                string[] identifierNames = c.DescendantNodes()
+                .OfType<PropertyDeclarationSyntax>().Select(v => v.Identifier.Text)
+                .ToArray();
+
+                object[] identifierTypes = c.DescendantNodes()
+                .OfType<PropertyDeclarationSyntax>().Select(v => v.Type)
+                .ToArray();
+                //Console.WriteLine(c.BaseList.ToString());
+                loadedClasses.Add(c.Identifier.ToString());
+
+                ConvertedClass cc = new ConvertedClass();
+
+                if (c.BaseList != null)
+                {
+                    string clean = c.BaseList.ToString();
+                    clean = clean.Replace(" ", "");
+                    clean = clean.Replace(":", "");
+                    Console.WriteLine("adding " + clean);
+                    cc.dependencies.Add(clean);
+                }
+                cc.name = c.Identifier.ToString();
+
+
+                for (int i = 0; i < identifierNames.Count(); i++)
+                {
+                    string tS = "";
+                    tS = identifierTypes[i].ToString();
+                    TypeSyntax t = identifierTypes[i] as TypeSyntax;
+                    bool l = false;
+                    if (t.GetFirstToken().ToString() == "List")
+                    {
+                        tS = t.GetFirstToken().GetNextToken().GetNextToken().ToString();
+                        l = true;
+                        Console.WriteLine("DEFINITELY A LIST");
+                    }
+
+                    cc.fields.Add(new fieldHelper(identifierNames[i], tS, l));
+                }
+
+                cc.linkedFilePath = p;
+
+                cc.registerWatcher();
+
+                toReturn.Add(cc);
+            }
+
+            return toReturn;
         }
 
         private void LoadedScripts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Binding items = new Binding();
+            items.Source = inspectedClasses[loadedScripts.SelectedIndex];
             items.Converter = new FlatBase.Misc.WizardHierarchyConverter();
-            items.Path = new PropertyPath("inspectedClasses["+loadedScripts.SelectedIndex+"]");
-            items.Source = this;
+            items.Path = new PropertyPath("fields");
+            items.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            
 
             inspector.SetBinding(ListView.ItemsSourceProperty, items);
             curClass = inspectedClasses[loadedScripts.SelectedIndex];

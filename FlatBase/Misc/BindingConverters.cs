@@ -476,7 +476,7 @@ namespace FlatBase.Misc
             if (values == null)
                 return null;
 
-            ObservableCollection<Assistant.fieldHelper> collection = (values as Assistant.ConvertedClass).fields;
+            ObservableCollection<Assistant.fieldHelper> collection = (values as ObservableCollection<Assistant.fieldHelper>);
 
             if (collection == null)
                 return null;
@@ -485,7 +485,6 @@ namespace FlatBase.Misc
             
             foreach(string cc in (values as Assistant.ConvertedClass).dependencies)
             {
-                Console.WriteLine("looking for " + cc);
                 foreach(Assistant.ConvertedClass vw in Assistant.SetupWizard.inspectedClasses)
                 {
                     if (vw.name == cc)
