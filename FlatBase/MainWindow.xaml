@@ -29,6 +29,8 @@
                 <MenuItem Header="Save" Click="MenuItem_Click" Icon="{materialDesign:PackIcon Kind=ContentSave}"/>
                 <MenuItem Header="Load" Click="MenuItem_Click_1" Icon="{materialDesign:PackIcon Kind=FolderOpen}"/>
                 <MenuItem Header="Export" Click="MenuItem_Click_2" Icon="{materialDesign:PackIcon Kind=DatabaseExport}"/>
+                <Separator></Separator>
+                <MenuItem Header="Open Project Folder" Click="MenuItem_Click_3" Icon="{materialDesign:PackIcon Kind=Folder}"/>
             </MenuItem>
             <MenuItem Header="Configure">
                 <MenuItem Header="Classes" Click="MenuItem_Classes" Icon="{materialDesign:PackIcon Kind=Code}"/>

@@ -587,7 +587,7 @@ namespace FlatBase
                     c++;
                     continue;
                 }
-
+                
                 if (o is OReference)
                 {
                     FieldSnippets.fsnipOReferenceSingleton fsor = new FieldSnippets.fsnipOReferenceSingleton("Spells", o as OReference,
@@ -972,6 +972,11 @@ namespace FlatBase
             
             controlledWindows.Add(tw);
             tw.Show();
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("explorer.exe", Environment.CurrentDirectory);
         }
     }
 }
