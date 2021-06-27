@@ -10,10 +10,11 @@ namespace FlatBase.Assistant
     public class TrelloAssistant
     {
         ITrello trello;
+        public string key { get; set; }
+        public string token { get; set; }
 
-        public TrelloAssistant(string authToken)
+        public TrelloAssistant()
         {
-            trello = new Trello(authToken);
             //var url = trello.GetAuthorizationUrl("_GJDE", Scope.ReadWrite);
 
             //Console.WriteLine(url);
@@ -36,17 +37,25 @@ namespace FlatBase.Assistant
 
         }
 
+        public void setKey(string k)
+        {
+            key = k;
+            trello = new Trello(key);
+        }
+
+        public void setToken(string t)
+        {
+            token = t;
+        }
+
         public string getURL()
         {
-            getBoards();
             return trello.GetAuthorizationUrl("_GJDE", Scope.ReadWrite, Expiration.Never).ToString();
-
-            
         }
 
         public string getBoards()
         {
-            trello.Authorize("d56049e96c2ec41816d9818fea14dd4787f67614f23e5fa849da95434d91e4fe");
+            trello.Authorize(token);
 
             IBoards boards = trello.Boards;
 

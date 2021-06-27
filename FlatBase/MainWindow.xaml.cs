@@ -93,7 +93,7 @@ namespace FlatBase
                 database = new GJDB();
             }
 
-            trelloIntegration = new Assistant.TrelloAssistant("be6c0ea81acb80d9119691b9cf43d9be");
+            trelloIntegration = new Assistant.TrelloAssistant();
         }
 
         public void loadPlugins()

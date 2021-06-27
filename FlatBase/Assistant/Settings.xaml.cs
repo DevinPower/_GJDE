@@ -29,12 +29,23 @@ namespace FlatBase.Assistant
 
         private void buttonApply_Click(object sender, RoutedEventArgs e)
         {
-            
+            _ta.setToken(textToken.Text);
+            _ta.getBoards();
         }
 
         private void buttonGetAuth_Click(object sender, RoutedEventArgs e)
         {
             textURL.Text = _ta.getURL();
+            textURL.IsEnabled = true;
+            textToken.IsEnabled = true;
+            buttonApply.IsEnabled = true;
+        }
+
+        private void buttonKey_Click(object sender, RoutedEventArgs e)
+        {
+            _ta.setKey(textKey.Text);
+            buttonGetAuth.IsEnabled = true;
+            
         }
     }
 }
