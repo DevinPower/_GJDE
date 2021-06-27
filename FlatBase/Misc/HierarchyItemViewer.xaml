@@ -13,9 +13,10 @@
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="#00F0F8FF"
-     FontFamily="{DynamicResource MaterialDesignFont}" HorizontalAlignment="Stretch" MinHeight="24">
+     FontFamily="{DynamicResource MaterialDesignFont}" HorizontalAlignment="Stretch" MinHeight="24" MinWidth="100">
     <Grid Background="#00F0F8FF">
         <Label Name="labelDisplay" Background="#00F0F8FF" Content="List Item" HorizontalAlignment="Center" Margin="0, 0,0,0" VerticalAlignment="Center" Foreground="Black"/>
+        <materialDesign:PackIcon Kind="CommentAccount" VerticalAlignment="Center" HorizontalAlignment="Right"></materialDesign:PackIcon>
         
     </Grid>
 </UserControl>

@@ -35,6 +35,7 @@
             <MenuItem Header="Configure">
                 <MenuItem Header="Classes" Click="MenuItem_Classes" Icon="{materialDesign:PackIcon Kind=Code}"/>
                 <MenuItem Header="Tags" Click="MenuItem_Labels" Icon="{materialDesign:PackIcon Kind=Label}"/>
+                <MenuItem Header="Settings" Click="MenuItem_Click_4" Icon="{materialDesign:PackIcon Kind=Gear}"/>
             </MenuItem>
         </Menu>
         <TabControl x:Name="tabMain" Style="{StaticResource MaterialDesignTabControl}" Margin="0,48,-0.4,125.8" Grid.ColumnSpan="2"/>

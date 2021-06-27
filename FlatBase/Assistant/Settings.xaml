@@ -1,0 +1,34 @@
+﻿<Window x:Class="FlatBase.Assistant.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:mde="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FlatBase.Assistant"
+        mc:Ignorable="d"
+        Title="Settings" Height="450" Width="373"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+
+
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="365">
+            <TabItem Header="Trello">
+                <Grid Background="#FFE5E5E5" Margin="0,0,-2,0" Name="trelloGrid">
+                    <TextBox x:Name="textURL" TextWrapping="Wrap" Margin="10,85,10,248" IsReadOnly="True" Text="generate authurl"/>
+                    <Button x:Name="buttonGetAuth" Content="Get AuthURL" HorizontalAlignment="Left" Margin="10,48,0,0" VerticalAlignment="Top" Width="142" Click="buttonGetAuth_Click"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Authorize _GJDE from the AuthURL and then save the token to enable Trello integration" VerticalAlignment="Top" Height="38" Width="354"/>
+                    <TextBox x:Name="textToken" HorizontalAlignment="Left" Height="23" Margin="10,321,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="341"/>
+                    <Button x:Name="buttonApply" Content="Apply" HorizontalAlignment="Left" Margin="276,349,0,0" VerticalAlignment="Top" Width="75" Click="buttonApply_Click"/>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</Window>

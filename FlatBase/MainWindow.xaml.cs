@@ -38,6 +38,8 @@ namespace FlatBase
         public ObjectStructure[] selected;
 
         public static List<Misc.PluginManager> plugins = new List<Misc.PluginManager>();
+
+        public Assistant.TrelloAssistant trelloIntegration;
         
         public void newDB()
         {
@@ -90,6 +92,8 @@ namespace FlatBase
             {
                 database = new GJDB();
             }
+
+            trelloIntegration = new Assistant.TrelloAssistant("be6c0ea81acb80d9119691b9cf43d9be");
         }
 
         public void loadPlugins()
@@ -977,6 +981,12 @@ namespace FlatBase
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("explorer.exe", Environment.CurrentDirectory);
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            Assistant.Settings settings = new Assistant.Settings(trelloIntegration);
+            settings.Show();
         }
     }
 }
