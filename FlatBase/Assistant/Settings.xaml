@@ -23,10 +23,11 @@
                     <TextBox x:Name="textURL" TextWrapping="Wrap" Margin="10,181,10.2,151.2" IsReadOnly="True" Text="generate authurl" IsEnabled="False"/>
                     <Button x:Name="buttonGetAuth" Content="Get AuthURL" HorizontalAlignment="Left" Margin="10,144,0,0" VerticalAlignment="Top" Width="142" Click="buttonGetAuth_Click" IsEnabled="False"/>
                     <TextBlock HorizontalAlignment="Left" Margin="10,101,-2.8,0" TextWrapping="Wrap" Text="Authorize _GJDE from the AuthURL and then save the token to enable Trello integration" VerticalAlignment="Top" Height="38" Width="354"/>
-                    <TextBox x:Name="textToken" HorizontalAlignment="Left" Height="23" Margin="10,321,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="341" IsEnabled="False"/>
-                    <Button x:Name="buttonApply" Content="Apply" HorizontalAlignment="Left" Margin="276,349,0,0" VerticalAlignment="Top" Width="75" Click="buttonApply_Click" IsEnabled="False"/>
+                    <TextBox x:Name="textToken" HorizontalAlignment="Left" Height="23" Margin="10,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="341" IsEnabled="False"/>
+                    <Button x:Name="buttonApply" Content="Apply" HorizontalAlignment="Left" Margin="276,298,0,0" VerticalAlignment="Top" Width="75" Click="buttonApply_Click" IsEnabled="False"/>
                     <TextBox x:Name="textKey" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="key" VerticalAlignment="Top" Width="341"/>
                     <Button x:Name="buttonKey" Content="Enable Key" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Width="116" Click="buttonKey_Click"/>
+                    <ComboBox x:Name="comboBoard" HorizontalAlignment="Left" Margin="10,335,0,0" VerticalAlignment="Top" Width="341" SelectionChanged="comboBoard_SelectionChanged"/>
                 </Grid>
             </TabItem>
 

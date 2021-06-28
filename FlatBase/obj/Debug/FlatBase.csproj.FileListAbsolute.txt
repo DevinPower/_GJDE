@@ -1747,3 +1747,5 @@ C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\bin\Debug\RestSharp.xml
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\bin\Debug\System.ValueTuple.xml
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Assistant\Settings.g.cs
 C:\Users\Devin\Desktop\Projects\FlatBaseGit\FlatBase\obj\Debug\Assistant\Settings.baml
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\IssuePicker.g.cs
+C:\Users\devin\Documents\_GJDE\FlatBase\obj\Debug\Assistant\IssuePicker.baml

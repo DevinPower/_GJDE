@@ -31,6 +31,9 @@ namespace FlatBase.Assistant
         {
             _ta.setToken(textToken.Text);
             _ta.getBoards();
+
+            foreach(TrelloNet.Board b in Assistant.TrelloAssistant.boardsList)
+                comboBoard.Items.Add(b.Name);
         }
 
         private void buttonGetAuth_Click(object sender, RoutedEventArgs e)
@@ -46,6 +49,15 @@ namespace FlatBase.Assistant
             _ta.setKey(textKey.Text);
             buttonGetAuth.IsEnabled = true;
             
+        }
+
+        private void comboBoard_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboBoard.Text != "")
+            {
+                _ta.setBoard(comboBoard.Text);
+                _ta.refreshData();
+            }
         }
     }
 }

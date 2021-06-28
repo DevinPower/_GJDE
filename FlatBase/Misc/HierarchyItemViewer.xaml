@@ -16,7 +16,7 @@
      FontFamily="{DynamicResource MaterialDesignFont}" HorizontalAlignment="Stretch" MinHeight="24" MinWidth="100">
     <Grid Background="#00F0F8FF">
         <Label Name="labelDisplay" Background="#00F0F8FF" Content="List Item" HorizontalAlignment="Center" Margin="0, 0,0,0" VerticalAlignment="Center" Foreground="Black"/>
-        <materialDesign:PackIcon Kind="CommentAccount" VerticalAlignment="Center" HorizontalAlignment="Right"></materialDesign:PackIcon>
+        <materialDesign:PackIcon x:Name="iconTrello" ToolTip="This has a related Trello issue" Kind="CommentAccount" VerticalAlignment="Center" HorizontalAlignment="Right" RenderTransformOrigin="1,0.5" Margin="0,4,84,4"></materialDesign:PackIcon>
         
     </Grid>
 </UserControl>

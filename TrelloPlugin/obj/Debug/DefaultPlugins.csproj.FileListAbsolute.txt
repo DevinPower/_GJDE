@@ -1,0 +1,7 @@
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\bin\Debug\DefaultPlugins.dll
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\bin\Debug\DefaultPlugins.pdb
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\obj\Debug\DefaultPlugins.csprojAssemblyReference.cache
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\obj\Debug\DefaultPlugins.csproj.CoreCompileInputs.cache
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\obj\Debug\DefaultPlugins.dll
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\obj\Debug\DefaultPlugins.pdb
+C:\Users\devin\Documents\_GJDE\DefaultPlugins\bin\Debug\DefaultPlugins.dll.config

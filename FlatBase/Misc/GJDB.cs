@@ -14,6 +14,7 @@ namespace FlatBase
     public class GJDB : INotifyPropertyChanged
     {
         public List<string> tabNames = new List<string>();
+        public Assistant.TrelloAssistant trelloIntegration;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,6 +22,9 @@ namespace FlatBase
         {
             data = new ObservableCollection<ObservableCollection<ObjectStructure>>();
             data.CollectionChanged += ContentCollectionChanged;
+
+            if (trelloIntegration == null)
+                trelloIntegration = new Assistant.TrelloAssistant();
         }
 
         public void ContentCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

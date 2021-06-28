@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatBase", "FlatBase.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultPlugins", "..\DefaultPlugins\DefaultPlugins.csproj", "{17DF4DC3-8241-4458-BD3A-D3B781C469EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrelloPlugin", "..\TrelloPlugin\TrelloPlugin.csproj", "{973CF6A2-64DA-41EE-9B47-FC1ABAC6E1E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{17DF4DC3-8241-4458-BD3A-D3B781C469EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17DF4DC3-8241-4458-BD3A-D3B781C469EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17DF4DC3-8241-4458-BD3A-D3B781C469EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{973CF6A2-64DA-41EE-9B47-FC1ABAC6E1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{973CF6A2-64DA-41EE-9B47-FC1ABAC6E1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{973CF6A2-64DA-41EE-9B47-FC1ABAC6E1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{973CF6A2-64DA-41EE-9B47-FC1ABAC6E1E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

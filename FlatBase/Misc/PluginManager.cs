@@ -9,58 +9,57 @@ namespace FlatBase.Misc
 {
     public class Plugin
     {
-        public interface exporter
-        {
-            string export(FlatBase.GJDB database);
-        }
-
     }
 
     public class PluginManager
     {
-        public string path;
+        public string TLPath;
+        public List<Plugin> plugins = new List<Plugin>();
 
         public PluginManager(string p)
         {
-            path = p;
+            TLPath = p;
         }
 
         public string run(GJDB database)
         {
-            // You must supply a valid fully qualified assembly name.
-            Assembly SampleAssembly = Assembly.LoadFile(path);
-            // Display all the types contained in the specified assembly.
-            try
+            foreach (string path in System.IO.Directory.GetFiles(TLPath))
             {
-                foreach (Type oType in SampleAssembly.GetTypes())
+                Assembly SampleAssembly = Assembly.LoadFile(path);
+                try
                 {
-                    Plugin exporter = (Plugin)Activator.CreateInstance(oType);
-                    
-                    foreach (MethodInfo m in oType.GetMethods())
+                    foreach (Type oType in SampleAssembly.GetTypes())
                     {
-                        Console.WriteLine("AT: " + m.Name);
-                        object[] paramsPass = new object[1];
-                        paramsPass[0] = database;
-                        if (m.Name == "exportDatabase")
+                        Plugin exporter = (Plugin)Activator.CreateInstance(oType);
+
+                        foreach (MethodInfo m in oType.GetMethods())
                         {
-                            string result = (string)m.Invoke(exporter, paramsPass);
-                            Console.WriteLine("received " + result + " from library");
-                            return result;
+                            Console.WriteLine("AT: " + m.Name);
+                            object[] paramsPass = new object[1];
+                            paramsPass[0] = database;
+                            if (m.Name == "exportDatabase")
+                            {
+                                string result = (string)m.Invoke(exporter, paramsPass);
+                                Console.WriteLine("received " + result + " from library");
+                                return result;
+                            }
                         }
                     }
                 }
-            }
-            catch(ReflectionTypeLoadException e)
-            {
-                Console.WriteLine("PLUGIN EXCEPTION-> " + e.Message);
-                foreach(Exception se in e.LoaderExceptions)
+                catch (ReflectionTypeLoadException e)
                 {
-                    Console.WriteLine(se.Message);
+                    Console.WriteLine("PLUGIN EXCEPTION-> " + e.Message);
+                    foreach (Exception se in e.LoaderExceptions)
+                    {
+                        Console.WriteLine(se.Message);
+                    }
+                    Console.WriteLine("---------------");
                 }
-                Console.WriteLine("---------------");
+
+                return "error with exporting plugin";
             }
 
-            return "error with exporting plugin";
+            return "loop error";
         }
     }
 }

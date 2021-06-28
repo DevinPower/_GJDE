@@ -170,6 +170,18 @@ namespace FlatBase.Misc
 
                     BindingOperations.SetBinding(hIV.colorDisplay, SolidColorBrush.ColorProperty, b);
 
+                    hIV.iconTrello.Visibility = Visibility.Hidden;
+                    hIV.iconTrello.ToolTip = "Trello Issues:";
+
+                    foreach (TrelloNet.Card crd in Assistant.TrelloAssistant.cardsList)
+                    {
+                        if (crd.Desc.Contains("IssueID: " + os.guid))
+                        {
+                            hIV.iconTrello.Visibility = Visibility.Visible;
+                            hIV.iconTrello.ToolTip += "\n" + crd.Name;
+                        }
+                    }
+
                     toret.Add(hIV);
                 }
                 i++;

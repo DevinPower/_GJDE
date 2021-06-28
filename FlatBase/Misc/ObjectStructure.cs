@@ -166,6 +166,9 @@ namespace FlatBase
     public class ObjectStructure : INotifyPropertyChanged
     {
         public static uint idCount = 0;
+
+        public uint guid { get; set; }
+
         public Dictionary<string, Misc.weightpool> weightpools = new Dictionary<string, Misc.weightpool>();
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -264,24 +267,9 @@ namespace FlatBase
             FIELDS = new ObservableCollection<object>();
             Name = "New Entry";
             fields.CollectionChanged += ContentCollectionChanged;
+
+            guid = idCount++;
             
-        }
-
-        public void setObserver(NotifyCollectionChangedEventHandler o)
-        {
-            fields.CollectionChanged += o;
-        }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public string getData()
-        {
-            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, Formatting = Formatting.Indented };
-
-            return JsonConvert.SerializeObject(this, deserializeSettings);
         }
 
         public static ObjectStructure fromString(string s, ObjectStructure pureObject)
@@ -304,6 +292,8 @@ namespace FlatBase
                     pureObject.FIELDS[i] = o;
                 }
             }
+
+            pureObject.guid = idCount++;
 
             return pureObject;
         }
@@ -331,7 +321,30 @@ namespace FlatBase
                 }
             }
 
+            pureObject.guid = idCount++;
+
             return pureObject;
         }
+
+        public void setObserver(NotifyCollectionChangedEventHandler o)
+        {
+            fields.CollectionChanged += o;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public string getData()
+        {
+            var deserializeSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, Formatting = Formatting.Indented };
+
+            return JsonConvert.SerializeObject(this, deserializeSettings);
+        }
+
+        
+
+       
     }
 }

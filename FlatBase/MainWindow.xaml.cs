@@ -38,8 +38,6 @@ namespace FlatBase
         public ObjectStructure[] selected;
 
         public static List<Misc.PluginManager> plugins = new List<Misc.PluginManager>();
-
-        public Assistant.TrelloAssistant trelloIntegration;
         
         public void newDB()
         {
@@ -64,6 +62,10 @@ namespace FlatBase
                     database.data.Last().Add((ObjectStructure)o);
                 }
             }
+
+            database.trelloIntegration = tempList.trelloIntegration;
+            if (database.trelloIntegration != null)
+                database.trelloIntegration.refreshData();
         }
 
         public void saveDatabase(string fileName)
@@ -91,13 +93,13 @@ namespace FlatBase
             else
             {
                 database = new GJDB();
+                database.trelloIntegration = new Assistant.TrelloAssistant();
             }
-
-            trelloIntegration = new Assistant.TrelloAssistant();
         }
 
         public void loadPlugins()
         {
+            //TODO: Relative path
             Misc.PluginManager pm = new Misc.PluginManager(@"C:\Users\devin\Documents\_GJDE\FlatBase\bin\Debug\Plugins\DefaultPlugins.dll");
 
             plugins.Add(pm);
@@ -309,17 +311,26 @@ namespace FlatBase
                 MenuItem copyMI = new MenuItem();
                 copyMI.Header = "Copy";
 
+                MenuItem trelloMI = new MenuItem();
+                trelloMI.Header = "Trello";
+
                 duplicateMI.Click += (rs, EventArgs) => { Entry_Duplicate(rs, EventArgs, lv, tempI); };
                 removeMI.Click += (rs, EventArgs) => { Entry_Delete(rs, EventArgs, lv, tempI); };
                 excludeMI.Click += (rs, EventArgs) => { Entry_Exclude(rs, EventArgs, lv, tempI); };
                 templateMI.Click += (rs, EventArgs) => { Entry_Template(rs, EventArgs, lv, tempI); };
                 copyMI.Click += (rs, EventArgs) => { Entry_Copy(rs, EventArgs, lv, tempI); };
+                trelloMI.Click += (rs, EventArgs) => {
+                    Assistant.IssuePicker ip = new Assistant.IssuePicker(5, database.trelloIntegration);
+                    ip.Show();
+                };
 
                 cm.Items.Add(duplicateMI);
                 cm.Items.Add(removeMI);
                 cm.Items.Add(excludeMI);
                 cm.Items.Add(templateMI);
                 cm.Items.Add(copyMI);
+                cm.Items.Add(trelloMI);
+
                 lv.ContextMenu = cm;
 
 
@@ -985,7 +996,7 @@ namespace FlatBase
 
         private void MenuItem_Click_4(object sender, RoutedEventArgs e)
         {
-            Assistant.Settings settings = new Assistant.Settings(trelloIntegration);
+            Assistant.Settings settings = new Assistant.Settings(database.trelloIntegration);
             settings.Show();
         }
     }
